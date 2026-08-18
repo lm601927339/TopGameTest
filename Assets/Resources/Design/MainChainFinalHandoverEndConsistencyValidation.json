@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalHandoverEndConsistencyValidation",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceFiles": {
+    "handoverEndStatement": "Assets/Resources/Design/MainChainFinalHandoverEndStatement.json",
+    "deliveryHandoverIndex": "Assets/Resources/Design/MainChainFinalDeliveryHandoverIndex.json",
+    "archiveClosureDeclaration": "Assets/Resources/Design/MainChainFinalArchiveClosureDeclaration.json",
+    "auditSignoffStatus": "Assets/Resources/Design/MainChainFinalAuditSignoffStatus.json"
+  },
+  "isConsistent": true,
+  "inconsistencyCount": 0,
+  "inconsistencyIds": [],
+  "handoverEnded": true,
+  "archiveChainEnded": true,
+  "auditClosed": true,
+  "noFurtherArtifactsNeeded": true,
+  "finalConsistencyDecision": "一致"
+}

@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveDeliveryIndex",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "finalVersion": true,
+  "canDirectlyDeliver": true,
+  "skillIdRange": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "artifacts": [
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveChecklist.json",
+      "purpose": "主链路归档清单模板骨架",
+      "source": "template",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveChecklistValidator.cs",
+      "purpose": "主链路归档清单自动校验器",
+      "source": "code",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveChecklistValidation.json",
+      "purpose": "主链路归档清单机器可读校验结果",
+      "source": "validator output",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+      "purpose": "主链路需要补充项清单",
+      "source": "validation output",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveWritebackPlan.json",
+      "purpose": "主链路写回补齐计划",
+      "source": "supplement output",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveWritebackPlanValidator.cs",
+      "purpose": "主链路写回计划校验器",
+      "source": "code",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json",
+      "purpose": "主链路写回计划机器可读校验结果",
+      "source": "validator output",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveBlockingChecklist.json",
+      "purpose": "主链路最终阻塞清单",
+      "source": "writeback validation output",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    },
+    {
+      "path": "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+      "purpose": "主链路最终决策汇总",
+      "source": "blocking + supplement + writeback validation outputs",
+      "finalVersion": true,
+      "canDirectlyDeliver": true,
+      "skillIdRange": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ]
+    }
+  ]
+}

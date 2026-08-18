@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalDeliveryCompletionState",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceCloseSuggestionPath": "Assets/Resources/Design/MainChainFinalCloseSuggestion.json",
+  "deliveryFinished": false,
+  "archiveClosed": false,
+  "hasRemainingActions": true,
+  "remainingClosableCount": 0,
+  "remainingOpenCount": 7,
+  "remainingManualFollowUpCount": 14,
+  "finalStatus": "未完成"
+}

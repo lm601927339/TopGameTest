@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalDeliveryHandoverIndex",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "finalRecommendation": "保持阻塞",
+  "artifactCount": 31,
+  "artifacts": [
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveChecklist.json",
+      "purpose": "主链路归档清单模板骨架",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "template"
+    },
+    {
+      "filePath": "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveChecklistValidator.cs",
+      "purpose": "主链路归档清单自动校验器",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "code"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveChecklistValidation.json",
+      "purpose": "主链路归档清单机器可读校验结果",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "validator output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+      "purpose": "主链路需要补充项清单",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "validation output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveWritebackPlan.json",
+      "purpose": "主链路写回补齐计划",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "supplement output"
+    },
+    {
+      "filePath": "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveWritebackPlanValidator.cs",
+      "purpose": "主链路写回计划校验器",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "code"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json",
+      "purpose": "主链路写回计划机器可读校验结果",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "validator output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveBlockingChecklist.json",
+      "purpose": "主链路最终阻塞清单",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "writeback validation output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+      "purpose": "主链路最终决策汇总",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "blocking + supplement + writeback validation outputs"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveDeliveryIndex.json",
+      "purpose": "主链路最终交付清单索引",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "aggregated archive outputs"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveClosureStatus.json",
+      "purpose": "主链路最终收口状态",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "delivery index output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveOpenItems.json",
+      "purpose": "主链路开放项清单",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "closure status output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveOpenItemResolutionPlan.json",
+      "purpose": "主链路开放项补齐/关闭计划",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "open items output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalRepairRoadmap.json",
+      "purpose": "主链路最终修复路线图",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "open item resolution output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalRepairExecutionPackage.json",
+      "purpose": "主链路最终修复执行包",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "repair roadmap output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalRepairClosureDecision.json",
+      "purpose": "主链路最终修复关闭判定",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "repair execution output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalManualRepairChecklist.json",
+      "purpose": "主链路最终人工修复清单",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "repair closure decision output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalRepairSignoffStatus.json",
+      "purpose": "主链路最终修复签字状态",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "manual repair checklist output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalUnsignedReasonList.json",
+      "purpose": "主链路最终未签字原因清单",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "repair signoff status output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveFeasibilityConclusion.json",
+      "purpose": "主链路最终归档可行性结论",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "unsigned reason output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalDataGapList.json",
+      "purpose": "主链路最终数据缺口清单",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "feasibility conclusion output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalFillActionTable.json",
+      "purpose": "主链路最终补齐执行动作表",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "data gap output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalFillExecutionStatus.json",
+      "purpose": "主链路最终补齐执行状态",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "fill action table output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalManualTodoOverview.json",
+      "purpose": "主链路最终人工待办总览",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "fill execution status output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalManualBlockingStatus.json",
+      "purpose": "主链路最终人工阻塞状态",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "manual todo overview output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalBlockedArchivePage.json",
+      "purpose": "主链路最终阻塞归档页",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "manual blocking status output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalTerminalState.json",
+      "purpose": "主链路最终终止状态",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "blocked archive page output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalTerminationDeclaration.json",
+      "purpose": "主链路最终结束声明",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "terminal state output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalDeliverySummary.json",
+      "purpose": "主链路最终交付总清单摘要",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "termination declaration output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalDeliveryConsistencyValidation.json",
+      "purpose": "主链路最终交付摘要一致性校验",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "delivery summary output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalAuditSignoffStatus.json",
+      "purpose": "主链路最终审计签收状态",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "consistency validation output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveSignoffStatement.json",
+      "purpose": "主链路最终归档签收说明",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "audit signoff status output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveClosureDeclaration.json",
+      "purpose": "主链路最终归档关闭声明",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "archive signoff statement output"
+    },
+    {
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveClosureConsistencyValidation.json",
+      "purpose": "主链路最终归档关闭一致性校验",
+      "status": "final",
+      "finalVersion": true,
+      "deliverable": true,
+      "source": "archive closure declaration output"
+    }
+  ]
+}

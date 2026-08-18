@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalReviewConclusion",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceBlockingPriorityMatrixPath": "Assets/Resources/Design/MainChainFinalBlockingPriorityMatrix.json",
+  "rootCauseSummary": "主链路归档相关字段仍停留在模板占位，未形成可直接落盘的目录值，因此无法完成最终归档闭环。",
+  "archiveNotClosedReason": "归档清单、写回计划与最终决策链路均显示 7 个主链路技能仍需人工补齐，未满足写回 GameDesignCatalog 的条件。",
+  "remainingActionsCount": 7,
+  "highestPriorityItems": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "canCloseWithCurrentState": false,
+  "nextRecommendedStep": "继续人工补齐主链路目录字段并重新生成归档校验链路。",
+  "finalReviewRecommendation": "保持阻塞"
+}

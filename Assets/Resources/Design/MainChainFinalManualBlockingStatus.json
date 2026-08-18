@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalManualBlockingStatus",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceManualTodoOverviewPath": "Assets/Resources/Design/MainChainFinalManualTodoOverview.json",
+  "manualBlocked": true,
+  "manualPendingCount": 63,
+  "blockingCount": 63,
+  "confirmOnlyCount": 0,
+  "closableCount": 0,
+  "finalManualState": "阻塞",
+  "canCloseArchiveNow": false
+}

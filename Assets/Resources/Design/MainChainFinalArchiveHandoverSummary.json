@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveHandoverSummary",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "masterDirectoryPath": "Assets/Resources/Design/MainChainFinalArchiveMasterDirectory.json",
+  "handoverReady": false,
+  "deliveryComplete": false,
+  "remainingOpenItemsCount": 7,
+  "remainingSupplementItemsCount": 7,
+  "finalRecommendation": "需要补充",
+  "sourceFiles": {
+    "decisionSummary": "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+    "supplementChecklist": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+    "openItems": "Assets/Resources/Design/MainChainFinalArchiveOpenItems.json",
+    "closureStatus": "Assets/Resources/Design/MainChainFinalArchiveClosureStatus.json",
+    "masterDirectory": "Assets/Resources/Design/MainChainFinalArchiveMasterDirectory.json"
+  },
+  "summary": {
+    "allArtifactsFinalVersion": true,
+    "allArtifactsDeliverable": true,
+    "hasOpenItems": true,
+    "hasSupplementItems": true
+  }
+}

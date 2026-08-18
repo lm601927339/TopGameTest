@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveFeasibilityConclusion",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceUnsignedReasonListPath": "Assets/Resources/Design/MainChainFinalUnsignedReasonList.json",
+  "canArchiveNow": false,
+  "needsMoreData": true,
+  "continueGenerating": true,
+  "finalFeasibility": "不可直接归档",
+  "remainingTemplatePlaceholdersCount": 63,
+  "remainingRealValuesCount": 0,
+  "recommendation": "继续补齐目录字段并重新生成归档校验链路"
+}

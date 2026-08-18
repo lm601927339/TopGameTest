@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveClosureStatus",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "deliveryIndexPath": "Assets/Resources/Design/MainChainFinalArchiveDeliveryIndex.json",
+  "isFullyClosed": false,
+  "finalDeliveryReady": false,
+  "needsNoFurtherAction": false,
+  "hasUnclosedItems": true,
+  "openItems": [
+    {
+      "type": "skillId",
+      "value": "fire"
+    },
+    {
+      "type": "skillId",
+      "value": "fireMultiple"
+    },
+    {
+      "type": "skillId",
+      "value": "spaceMonkeyBall"
+    },
+    {
+      "type": "skillId",
+      "value": "grenade"
+    },
+    {
+      "type": "skillId",
+      "value": "explosiveBarrel"
+    },
+    {
+      "type": "skillId",
+      "value": "cloakBoomerang"
+    },
+    {
+      "type": "skillId",
+      "value": "teleportBullet"
+    }
+  ],
+  "openSkillIds": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "closedArtifactPaths": [
+    "Assets/Resources/Design/MainChainFinalArchiveChecklist.json",
+    "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveChecklistValidator.cs",
+    "Assets/Resources/Design/MainChainFinalArchiveChecklistValidation.json",
+    "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+    "Assets/Resources/Design/MainChainFinalArchiveWritebackPlan.json",
+    "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveWritebackPlanValidator.cs",
+    "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json",
+    "Assets/Resources/Design/MainChainFinalArchiveBlockingChecklist.json",
+    "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+    "Assets/Resources/Design/MainChainFinalArchiveDeliveryIndex.json"
+  ],
+  "summary": {
+    "closedArtifactCount": 10,
+    "openArtifactCount": 7,
+    "allArtifactsFinalVersion": true
+  }
+}

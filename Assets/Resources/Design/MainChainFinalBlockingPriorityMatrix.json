@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalBlockingPriorityMatrix",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceRootCausePath": "Assets/Resources/Design/MainChainFinalRootCauseList.json",
+  "overallStatus": "保持阻塞",
+  "entries": [
+    {
+      "itemId": "fire",
+      "relatedSkillId": "fire",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    },
+    {
+      "itemId": "fireMultiple",
+      "relatedSkillId": "fireMultiple",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    },
+    {
+      "itemId": "spaceMonkeyBall",
+      "relatedSkillId": "spaceMonkeyBall",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    },
+    {
+      "itemId": "grenade",
+      "relatedSkillId": "grenade",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    },
+    {
+      "itemId": "explosiveBarrel",
+      "relatedSkillId": "explosiveBarrel",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    },
+    {
+      "itemId": "cloakBoomerang",
+      "relatedSkillId": "cloakBoomerang",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    },
+    {
+      "itemId": "teleportBullet",
+      "relatedSkillId": "teleportBullet",
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "priorityRank": 1,
+      "resolutionPath": "补齐目录字段值并重新生成归档校验结果",
+      "ownerHint": "design",
+      "estimatedEffort": "low",
+      "canAutoResolve": false,
+      "nextAction": "人工修复",
+      "finalSortAdvice": "优先修复"
+    }
+  ]
+}

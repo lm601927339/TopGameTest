@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveSupplementChecklist",
+  "sourceValidationPath": "Assets/Resources/Design/MainChainFinalArchiveChecklistValidation.json",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "summary": {
+    "supplementCount": 7,
+    "blockedCount": 0,
+    "readyCount": 0
+  },
+  "entries": [
+    {
+      "skillId": "fire",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    },
+    {
+      "skillId": "fireMultiple",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    },
+    {
+      "skillId": "grenade",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    },
+    {
+      "skillId": "teleportBullet",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "fieldPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "sourceLabel": "template",
+      "supplementAdvice": "需要补充"
+    }
+  ]
+}

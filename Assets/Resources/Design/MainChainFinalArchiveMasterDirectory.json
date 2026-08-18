@@ -1,0 +1,268 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveMasterDirectory",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "finalVersion": true,
+  "deliverable": true,
+  "skillScope": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "finalDeliveryOrder": [
+    "Assets/Resources/Design/MainChainFinalArchiveChecklist.json",
+    "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveChecklistValidator.cs",
+    "Assets/Resources/Design/MainChainFinalArchiveChecklistValidation.json",
+    "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+    "Assets/Resources/Design/MainChainFinalArchiveWritebackPlan.json",
+    "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveWritebackPlanValidator.cs",
+    "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json",
+    "Assets/Resources/Design/MainChainFinalArchiveBlockingChecklist.json",
+    "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+    "Assets/Resources/Design/MainChainFinalArchiveDeliveryIndex.json",
+    "Assets/Resources/Design/MainChainFinalArchiveClosureStatus.json",
+    "Assets/Resources/Design/MainChainFinalArchiveOpenItems.json",
+    "Assets/Resources/Design/MainChainFinalArchiveOpenItemResolutionPlan.json"
+  ],
+  "artifacts": [
+    {
+      "deliveryOrder": 1,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveChecklist.json",
+      "purpose": "主链路归档清单模板骨架",
+      "source": "template",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 2,
+      "filePath": "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveChecklistValidator.cs",
+      "purpose": "主链路归档清单自动校验器",
+      "source": "code",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 3,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveChecklistValidation.json",
+      "purpose": "主链路归档清单机器可读校验结果",
+      "source": "validator output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 4,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+      "purpose": "主链路需要补充项清单",
+      "source": "validation output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 5,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveWritebackPlan.json",
+      "purpose": "主链路写回补齐计划",
+      "source": "supplement output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 6,
+      "filePath": "Assets/Scripts/Fight/Architecture/MainChainFinalArchiveWritebackPlanValidator.cs",
+      "purpose": "主链路写回计划校验器",
+      "source": "code",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 7,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json",
+      "purpose": "主链路写回计划机器可读校验结果",
+      "source": "validator output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 8,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveBlockingChecklist.json",
+      "purpose": "主链路最终阻塞清单",
+      "source": "writeback validation output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 9,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+      "purpose": "主链路最终决策汇总",
+      "source": "blocking + supplement + writeback validation outputs",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 10,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveDeliveryIndex.json",
+      "purpose": "主链路最终交付清单索引",
+      "source": "aggregated archive outputs",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 11,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveClosureStatus.json",
+      "purpose": "主链路最终收口状态",
+      "source": "delivery index output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 12,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveOpenItems.json",
+      "purpose": "主链路开放项清单",
+      "source": "closure status output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    },
+    {
+      "deliveryOrder": 13,
+      "filePath": "Assets/Resources/Design/MainChainFinalArchiveOpenItemResolutionPlan.json",
+      "purpose": "主链路开放项补齐/关闭计划",
+      "source": "open items output",
+      "finalVersion": true,
+      "deliverable": true,
+      "skillScope": [
+        "fire",
+        "fireMultiple",
+        "spaceMonkeyBall",
+        "grenade",
+        "explosiveBarrel",
+        "cloakBoomerang",
+        "teleportBullet"
+      ],
+      "status": "final"
+    }
+  ]
+}

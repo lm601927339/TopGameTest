@@ -1,0 +1,648 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalDataGapList",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceFeasibilityConclusionPath": "Assets/Resources/Design/MainChainFinalArchiveFeasibilityConclusion.json",
+  "fillOrder": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "entries": [
+    {
+      "skillId": "fire",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fire",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "grenade",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "timelineId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "bulletId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "aoeId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "buffId",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "legacy mirror static tables",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "targetMode",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 1,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "cost",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "cooldown",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 2,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "tags",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "fieldKey": "notes",
+      "missingReason": "模板占位，未写入实际目录值。",
+      "expectedSource": "design input",
+      "priority": 3,
+      "canAutoFill": false,
+      "fillAction": "人工补齐",
+      "targetValue": null
+    }
+  ]
+}

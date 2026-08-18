@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalRepairSignoffStatus",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceManualRepairChecklistPath": "Assets/Resources/Design/MainChainFinalManualRepairChecklist.json",
+  "repairSignedOff": false,
+  "canArchive": false,
+  "needsFurtherWork": true,
+  "remainingManualItemsCount": 7,
+  "remainingBlockingItemsCount": 7,
+  "finalRepairDecision": "需要人工修复"
+}

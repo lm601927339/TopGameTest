@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalDeliveryConsistencyValidation",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceSummaryPath": "Assets/Resources/Design/MainChainFinalDeliverySummary.json",
+  "sourceFiles": {
+    "masterDirectory": "Assets/Resources/Design/MainChainFinalArchiveMasterDirectory.json",
+    "terminalState": "Assets/Resources/Design/MainChainFinalTerminalState.json",
+    "repairExecutionPackage": "Assets/Resources/Design/MainChainFinalRepairExecutionPackage.json",
+    "repairSignoffStatus": "Assets/Resources/Design/MainChainFinalRepairSignoffStatus.json"
+  },
+  "isConsistent": true,
+  "inconsistencyCount": 0,
+  "inconsistencyIds": [],
+  "canKeepBlocked": true,
+  "finalConsistencyDecision": "一致"
+}

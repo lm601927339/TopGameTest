@@ -1,0 +1,323 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace DesignerScripts
+{
+    ///<summary>
+    ///buff的效果
+    ///</summary>
+    public class BuffScript{
+        public static Dictionary<string, BuffOnOccur> onOccurFunc = new Dictionary<string, BuffOnOccur>(){
+            {"BeatBackOccur",BeatBackOccur },
+            {"SlowDownSpeedOccur",SlowDownSpeedOccur },
+            {"HasteOccur", HasteOccur},
+            {"DebugInvincibleOccur", DebugInvincibleOccur},
+            {"DebugStopMoveOccur", DebugStopMoveOccur},
+            {"StunOccur", StunOccur},
+        };
+        public static Dictionary<string, BuffOnRemoved> onRemovedFunc = new Dictionary<string, BuffOnRemoved>(){
+            {"TeleportCarrier", TeleportCarrier},
+            {"SlowDownSpeedORemove",SlowDownSpeedORemove },
+            {"HasteORemove", HasteORemove},
+            {"DebugInvincibleRemove", DebugInvincibleRemove},
+            {"DebugStopMoveRemove", DebugStopMoveRemove},
+        };
+        public static Dictionary<string, BuffOnTick> onTickFunc = new Dictionary<string, BuffOnTick>(){
+            {"BarrelDurationLose", BarrelDurationLose},
+            {"CreateDamageOnTick",CreateDamageOnTick },
+            {"CreateCureOnTick",CreateCureOnTick },
+        };
+        public static Dictionary<string, BuffOnCast> onCastFunc = new Dictionary<string, BuffOnCast>(){
+            {"ReloadAmmo", ReloadAmmo},
+            {"FireTeleportBullet", FireTeleportBullet},
+            
+        };
+        public static Dictionary<string, BuffOnHit> onHitFunc = new Dictionary<string, BuffOnHit>(){
+            
+        };
+        public static Dictionary<string, BuffOnBeHurt> beHurtFunc = new Dictionary<string, BuffOnBeHurt>(){
+            {"OnlyTakeOneDirectDamage", OnlyTakeOneDirectDamage}
+        };
+        public static Dictionary<string, BuffOnKill> onKillFunc = new Dictionary<string, BuffOnKill>(){
+            
+        };
+        public static Dictionary<string, BuffOnBeKilled> beKilledFunc = new Dictionary<string, BuffOnBeKilled>(){
+            {"BarrelExplosed", BarrelExplosed}
+        };
+
+        private static void BeatBackOccur(BuffObj buff, int modifyStack) {
+            var timeline = new TimelineObj(DesingerTables.TimelineData.data["skill_BeatBackAnimate"], buff.carrier, new object[1] { buff.caster});
+            SceneVariants.CreateTimeline(timeline);
+        }
+        private static void SlowDownSpeedOccur(BuffObj buff, int modifyStack)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null )
+            {
+                if (buff.model.onOccurParams.Length > 0)
+                {
+                    Debug.Log("add buff  加减速 = "+ (int)buff.model.onOccurParams[0]);
+                    cs.buffProp[0].moveSpeed += (int)buff.model.onOccurParams[0];
+                }
+            }
+        }
+        private static void SlowDownSpeedORemove(BuffObj buff)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                if (buff.model.onRemovedParams.Length > 0)
+                {
+                    Debug.Log("remove buff  加减速 = " + (int)buff.model.onRemovedParams[0]);
+                    cs.buffProp[0].moveSpeed += (int)buff.model.onRemovedParams[0];
+                }
+            }
+        }
+
+        ///<summary>
+        ///onTick
+        ///创建伤害
+        ///</summary>
+        private static void CreateDamageOnTick(BuffObj buff)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                if (buff.model.onTickParams.Length > 0)
+                {
+                    Debug.Log("[BuffScript] CreateDamageOnTick on " + buff.carrier.name + " value=" + buff.model.onTickParams[0]);
+                    SceneVariants.CreateDamage(buff.carrier, buff.carrier, new Damage((int)buff.model.onTickParams[0], 0), 0, 0, new DamageInfoTag[] { DamageInfoTag.periodDamage });
+                }
+            }
+        }
+        ///<summary>
+        ///onTick
+        ///创建治疗
+        ///</summary>
+        private static void CreateCureOnTick(BuffObj buff)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                if (buff.model.onTickParams.Length > 0)
+                {
+                    Debug.Log("[BuffScript] CreateCureOnTick on " + buff.carrier.name + " value=" + buff.model.onTickParams[0]);
+                    SceneVariants.CreateDamage(buff.carrier, buff.carrier, new Damage((int)buff.model.onTickParams[0], 0), 0, 0, new DamageInfoTag[] { DamageInfoTag.directHeal });
+                }
+            }
+        }
+
+        /// <summary>
+        /// 加速生效时，同时提升移动和出手速度。
+        /// </summary>
+        private static void HasteOccur(BuffObj buff, int modifyStack)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                if (buff.model.onOccurParams.Length > 0)
+                {
+                    cs.buffProp[0].moveSpeed += (int)buff.model.onOccurParams[0];
+                    if (buff.model.onOccurParams.Length > 1)
+                    {
+                        cs.buffProp[0].actionSpeed += (int)buff.model.onOccurParams[1];
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 加速结束时，恢复移动和出手速度。
+        /// </summary>
+        private static void HasteORemove(BuffObj buff)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                if (buff.model.onRemovedParams.Length > 0)
+                {
+                    cs.buffProp[0].moveSpeed += (int)buff.model.onRemovedParams[0];
+                    if (buff.model.onRemovedParams.Length > 1)
+                    {
+                        cs.buffProp[0].actionSpeed += (int)buff.model.onRemovedParams[1];
+                    }
+                }
+            }
+        }
+
+        ///<summary>
+        ///onCast
+        ///如果子弹不够放技能，就会填装子弹
+        ///no params
+        ///</summary>
+        /// <summary>
+        /// 调试无敌生效时，把角色切到无敌状态，方便直接验证伤害流程。
+        /// </summary>
+        private static void DebugInvincibleOccur(BuffObj buff, int modifyStack)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                Debug.Log("[BuffScript] DebugInvincibleOccur on " + buff.carrier.name);
+                cs.SetDebugInvincible(true);
+            }
+        }
+
+        /// <summary>
+        /// 调试无敌结束时，恢复为正常受伤状态。
+        /// </summary>
+        private static void DebugInvincibleRemove(BuffObj buff)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                Debug.Log("[BuffScript] DebugInvincibleRemove on " + buff.carrier.name);
+                cs.SetDebugInvincible(false);
+            }
+        }
+
+        /// <summary>
+        /// 调试停止移动生效时，直接关闭移动控制。
+        /// </summary>
+        private static void DebugStopMoveOccur(BuffObj buff, int modifyStack)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                Debug.Log("[BuffScript] DebugStopMoveOccur on " + buff.carrier.name);
+                cs.SetMoveEnabled(false);
+            }
+        }
+
+        /// <summary>
+        /// 调试停止移动结束时，恢复移动控制。
+        /// </summary>
+        private static void DebugStopMoveRemove(BuffObj buff)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                Debug.Log("[BuffScript] DebugStopMoveRemove on " + buff.carrier.name);
+                cs.SetMoveEnabled(true);
+            }
+        }
+
+        /// <summary>
+        /// 眩晕生效时，播放一个可见的眩晕动画，方便观察控制状态。
+        /// </summary>
+        private static void StunOccur(BuffObj buff, int modifyStack)
+        {
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs != null)
+            {
+                Debug.Log("[BuffScript] StunOccur on " + buff.carrier.name);
+                cs.Play("Stun");
+            }
+        }
+
+        private static TimelineObj ReloadAmmo(BuffObj buff, SkillObj skill, TimelineObj timeline){
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            return (cs.resource.Enough(skill.model.cost) == true) ? timeline : 
+                new TimelineObj(DesingerTables.TimelineData.data["skill_reload"], buff.carrier, new object[0]);
+        }
+
+        ///<summary>
+        ///onCast
+        ///判断自己的param的"firedBullet"，如果firedBullet已经不存在了，或者压根不存在，就发射子弹，否则，就传送过去，参数：
+        ///["firedBullet"]GameObject：firedBullet，理论上也可以是别的东西
+        ///</summary>
+        private static TimelineObj FireTeleportBullet(BuffObj buff, SkillObj skill, TimelineObj timeline){
+            if (skill.model.id != "teleportBullet") return timeline;
+            GameObject firedBullet = buff.buffParam.ContainsKey("firedBullet") ? (GameObject)buff.buffParam["firedBullet"] : null;
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (firedBullet == null){
+                buff.buffParam["firedBullet"] = null;
+                return timeline;
+            }else{
+                if (cs == null || SceneVariants.map.CanUnitPlacedHere(firedBullet.transform.position, cs.property.bodyRadius, cs.property.moveType) == false){
+                    SceneVariants.PopUpStringOnCharacter(buff.carrier, "<color=red>无法传送</color>");
+                    return null;    //如果没有角色了，或者说飞弹的位置不能传送，那么就返回一个空，也就是不让放技能
+                }
+                return new TimelineObj(DesingerTables.TimelineData.data["skill_teleportBullet_tele"], timeline.caster, null);
+            }
+        }
+
+        ///<summary>
+        ///onRemoved
+        ///把buff的carrier传送到记录的子弹的世界坐标（非常危险，因为那个坐标未必能站立），并且移除掉那个子弹
+        ///</summary>
+        private static void TeleportCarrier(BuffObj buff){
+            //Debug.Log("TeleportCarrier 传送到记录的子弹 " );
+            ChaState cs = buff.carrier.GetComponent<ChaState>();
+            if (cs.dead) return;
+            //根据添加的 buff 来查询firedBullet
+            List<BuffObj> fireRec = cs.GetBuffById("TeleportBulletPassive", new List<GameObject>(){buff.caster});
+            if (fireRec.Count <= 0) return;
+            GameObject bullet = fireRec[0].buffParam.ContainsKey("firedBullet") ? (GameObject)fireRec[0].buffParam["firedBullet"] : null;
+            if (bullet == null) return;
+            buff.carrier.transform.position = new Vector3(bullet.transform.position.x, 0, bullet.transform.position.z);
+            SceneVariants.RemoveBullet(bullet);
+        }
+
+        ///<summary>
+        ///beHurt
+        ///buff的Carrier只能受到1点直接伤害，免疫其他一切，桶子就是这样的
+        ///</summary>
+        private static void OnlyTakeOneDirectDamage(BuffObj buff, ref DamageInfo damageInfo, GameObject attacker){
+            bool isDirectDamage = false;
+            for (int i = 0; i < damageInfo.tags.Length; i++){
+                if (damageInfo.tags[i] == DamageInfoTag.directDamage){
+                    isDirectDamage = true;
+                    break;
+                }
+            }
+            if (isDirectDamage == true && damageInfo.DamageValue(false) > 0){
+                int finalDV = 1;
+                if (attacker != null){
+                    ChaState cs = attacker.GetComponent<ChaState>();
+                    //来自另外一个桶子（不包含自己）的伤害为9999，其他的都是1
+                    if (cs != null && cs.HasTag("Barrel") == true && attacker.Equals(buff.carrier) == false){
+                        finalDV = 9999;
+                    }
+                }
+                damageInfo.damage = new Damage(0, finalDV);
+            }else{
+                damageInfo.damage = new Damage(0);
+            }
+        }
+        ///<summary>
+        ///onTick
+        ///桶子每5秒对自己伤害，其实可以写一个公用的dot，不过这里表达的是，不公用也没问题
+        ///</summary>
+        private static void BarrelDurationLose(BuffObj buff){
+            SceneVariants.CreateDamage(buff.carrier, buff.carrier, new Damage(0,1), 0, 0, new DamageInfoTag[]{DamageInfoTag.directDamage});
+        }
+        ///<summary>
+        ///beKilled
+        ///死亡后爆炸，对敌人造成伤害，其他桶子也是其他敌人，所以不必特殊处理，beHurt已经特殊处理了，当然还要立即清除掉这个桶子。
+        ///</summary>
+        private static void BarrelExplosed(BuffObj buff, DamageInfo damageInfo, GameObject attacker){
+            GameObject aoeCaster = buff.caster != null ? buff.caster : buff.carrier;
+            //AoeModel是可以动态生成的
+            SceneVariants.CreateAoE(new AoeLauncher(
+                new AoeModel(
+                    "BoomExplosive", "", new string[0], 0, false,
+                    "CreateSightEffect", new object[]{"Effect/Explosion_A"},
+                    "BarrelExplosed", new object[0], 
+                    "", new object[0],  //tick
+                    "", new object[0],  //chaEnter
+                    "", new object[0],  //chaLeave
+                    "", new object[0],  //bulletEnter
+                    "", new object[0]   //bulletLeave
+                ), 
+                aoeCaster, buff.carrier.transform.position, 2.2f, 0.5f, 0,
+                null, null, new Dictionary<string, object>(){
+                    {"Barrel", buff.carrier}
+                }
+            ));
+            //隐藏自己，反正后面会被Remover移走
+            buff.carrier.transform.localScale = Vector3.zero;
+        }
+    }
+}

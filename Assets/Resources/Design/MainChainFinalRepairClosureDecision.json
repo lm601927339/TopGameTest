@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalRepairClosureDecision",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceRepairExecutionPackagePath": "Assets/Resources/Design/MainChainFinalRepairExecutionPackage.json",
+  "canExecuteNow": false,
+  "needsHuman": true,
+  "remainingBlockingItemsCount": 7,
+  "remainingAutoResolveItemsCount": 0,
+  "finalRepairStatus": "需要人工修复",
+  "pendingItems": [
+    { "itemId": "fire", "finalHandling": "人工修复" },
+    { "itemId": "fireMultiple", "finalHandling": "人工修复" },
+    { "itemId": "spaceMonkeyBall", "finalHandling": "人工修复" },
+    { "itemId": "grenade", "finalHandling": "人工修复" },
+    { "itemId": "explosiveBarrel", "finalHandling": "人工修复" },
+    { "itemId": "cloakBoomerang", "finalHandling": "人工修复" },
+    { "itemId": "teleportBullet", "finalHandling": "人工修复" }
+  ]
+}

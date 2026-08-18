@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveDecisionSummary",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceFiles": {
+    "blockingChecklist": "Assets/Resources/Design/MainChainFinalArchiveBlockingChecklist.json",
+    "supplementChecklist": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+    "writebackValidation": "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json"
+  },
+  "overallStatus": "阻塞",
+  "finalAdvice": "阻塞",
+  "canDirectlyWriteToGameDesignCatalog": false,
+  "needsManualFollowUp": true,
+  "blockedSkillIds": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "supplementSkillIds": [
+    "fire",
+    "fireMultiple",
+    "spaceMonkeyBall",
+    "grenade",
+    "explosiveBarrel",
+    "cloakBoomerang",
+    "teleportBullet"
+  ],
+  "readySkillIds": [],
+  "summary": {
+    "totalSkills": 7,
+    "blockedCount": 7,
+    "supplementCount": 7,
+    "readyCount": 0
+  },
+  "decisionMatrix": [
+    {
+      "skillId": "fire",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    },
+    {
+      "skillId": "fireMultiple",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    },
+    {
+      "skillId": "grenade",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    },
+    {
+      "skillId": "teleportBullet",
+      "finalAdvice": "阻塞",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "canDirectlyWriteToGameDesignCatalog": false,
+      "needsManualFollowUp": true
+    }
+  ]
+}

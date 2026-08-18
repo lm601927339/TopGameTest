@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalExecutionRecommendationSummary",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceReviewConclusionPath": "Assets/Resources/Design/MainChainFinalReviewConclusion.json",
+  "executionRecommendation": "继续修复",
+  "keepBlocked": true,
+  "continueRepair": true,
+  "stopGenerating": false,
+  "reasonSummary": "主链路归档字段仍处于模板占位，未形成可直接落盘的目录值，最终归档闭环未完成。",
+  "nextOwnerAction": "人工补齐主链路目录字段并重新生成归档校验链路。",
+  "finalDeliverableCount": 17
+}

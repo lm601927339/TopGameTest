@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveChecklistTemplate",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "scope": [
+    "config",
+    "directory",
+    "validation"
+  ],
+  "allowedValues": {
+    "finalAdvice": [
+      "通过",
+      "需要补充",
+      "阻塞"
+    ],
+    "directlyWritableToGameDesignCatalog": [
+      true,
+      false,
+      null
+    ]
+  },
+  "entries": [
+    {
+      "skillId": "fire",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    },
+    {
+      "skillId": "fireMultiple",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    },
+    {
+      "skillId": "grenade",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    },
+    {
+      "skillId": "teleportBullet",
+      "timelineId": null,
+      "bulletId": null,
+      "aoeId": null,
+      "buffId": null,
+      "targetMode": null,
+      "cost": null,
+      "cooldown": null,
+      "tags": [],
+      "notes": "",
+      "finalAdvice": "",
+      "sourceLabel": "",
+      "diffSummary": "",
+      "blockingReason": "",
+      "directlyWritableToGameDesignCatalog": null
+    }
+  ],
+  "summary": {
+    "readyToWrite": [],
+    "needsSupplement": [],
+    "blocked": []
+  }
+}

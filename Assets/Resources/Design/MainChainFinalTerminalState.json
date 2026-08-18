@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalTerminalState",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceBlockedArchivePagePath": "Assets/Resources/Design/MainChainFinalBlockedArchivePage.json",
+  "generationStopped": true,
+  "noFurtherArtifactsNeeded": false,
+  "archiveTerminalState": "阻塞终止",
+  "finalRecommendation": "保持阻塞",
+  "remainingOpenCount": 7,
+  "remainingManualPendingCount": 63,
+  "blockedReasonSummary": "主链路归档字段仍处于模板占位，未形成可直接落盘的目录值，且 7 个主链路技能仍有 63 个待人工补齐项。",
+  "noNewArchiveItemsWillBeProduced": true
+}

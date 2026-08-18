@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveClosureDecision",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceTodoCloseCandidatesPath": "Assets/Resources/Design/MainChainFinalTodoCloseCandidates.json",
+  "isClosedForArchive": false,
+  "hasBlockingActions": true,
+  "remainingCloseCandidatesCount": 7,
+  "remainingOpenCount": 7,
+  "remainingManualFollowUpCount": 14,
+  "finalArchiveDecision": "阻塞"
+}

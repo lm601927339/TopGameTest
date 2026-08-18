@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalDeliverySummary",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "finalArchiveSummaryReady": true,
+  "archiveChainEnded": true,
+  "artifactIndexPath": "Assets/Resources/Design/MainChainFinalArchiveMasterDirectory.json",
+  "statusPath": "Assets/Resources/Design/MainChainFinalTerminalState.json",
+  "decisionPath": "Assets/Resources/Design/MainChainFinalArchiveClosureDecision.json",
+  "repairPath": "Assets/Resources/Design/MainChainFinalRepairExecutionPackage.json",
+  "remainingOpenCount": 7,
+  "remainingManualPendingCount": 63,
+  "finalRecommendation": "保持阻塞",
+  "sourceFiles": {
+    "masterDirectory": "Assets/Resources/Design/MainChainFinalArchiveMasterDirectory.json",
+    "closureStatus": "Assets/Resources/Design/MainChainFinalArchiveClosureStatus.json",
+    "openItems": "Assets/Resources/Design/MainChainFinalArchiveOpenItems.json",
+    "openItemResolutionPlan": "Assets/Resources/Design/MainChainFinalArchiveOpenItemResolutionPlan.json",
+    "decisionSummary": "Assets/Resources/Design/MainChainFinalArchiveDecisionSummary.json",
+    "blockedArchivePage": "Assets/Resources/Design/MainChainFinalBlockedArchivePage.json",
+    "terminalState": "Assets/Resources/Design/MainChainFinalTerminalState.json",
+    "terminationDeclaration": "Assets/Resources/Design/MainChainFinalTerminationDeclaration.json",
+    "repairExecutionPackage": "Assets/Resources/Design/MainChainFinalRepairExecutionPackage.json",
+    "repairClosureDecision": "Assets/Resources/Design/MainChainFinalRepairClosureDecision.json"
+  },
+  "summary": {
+    "allFinalArtifactsPresent": true,
+    "allArtifactsFinalVersion": true,
+    "allArtifactsDeliverable": true,
+    "archiveTerminalState": "阻塞终止"
+  }
+}

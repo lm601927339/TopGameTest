@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveChecklistValidation",
+  "sourceChecklistPath": "Assets/Resources/Design/MainChainFinalArchiveChecklist.json",
+  "overallStatus": "需要补充",
+  "coverageComplete": true,
+  "fieldKeysComplete": true,
+  "directlyWritableToGameDesignCatalog": false,
+  "expectedSkillCount": 7,
+  "presentSkillCount": 7,
+  "missingSkillIds": [],
+  "unexpectedSkillIds": [],
+  "summary": {
+    "readyToWrite": [],
+    "needsSupplement": [
+      "fire",
+      "fireMultiple",
+      "spaceMonkeyBall",
+      "grenade",
+      "explosiveBarrel",
+      "cloakBoomerang",
+      "teleportBullet"
+    ],
+    "blocked": []
+  },
+  "entries": [
+    {
+      "skillId": "fire",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    },
+    {
+      "skillId": "fireMultiple",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    },
+    {
+      "skillId": "grenade",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    },
+    {
+      "skillId": "teleportBullet",
+      "finalAdvice": "需要补充",
+      "sourceLabel": "template",
+      "diffSummary": "模板骨架完整，字段值均为占位。",
+      "blockingReason": "timelineId、bulletId、aoeId、buffId、targetMode、cost、cooldown、tags、notes 尚未填充实际值。",
+      "directlyWritableToGameDesignCatalog": false,
+      "fieldChecks": [
+        { "fieldName": "timelineId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "bulletId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "aoeId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "buffId", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "targetMode", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cost", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "cooldown", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "tags", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" },
+        { "fieldName": "notes", "present": true, "filled": false, "sourceLabel": "template", "valueState": "placeholder" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveClosureDeclaration",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceArchiveSignoffStatementPath": "Assets/Resources/Design/MainChainFinalArchiveSignoffStatement.json",
+  "archiveClosed": false,
+  "archiveSignoffReady": true,
+  "archiveFinalized": false,
+  "canArchiveAudit": true,
+  "remainingOpenCount": 7,
+  "remainingManualPendingCount": 63,
+  "finalArchiveDecision": "签收待归档",
+  "archiveChainFormallyEnded": true
+}

@@ -1,0 +1,286 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveWritebackPlan",
+  "sourceSupplementChecklistPath": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "overallStatus": "需要补充",
+  "meetsWriteConditions": false,
+  "canAutoFill": false,
+  "canDirectlyWriteToGameDesignCatalog": false,
+  "summary": {
+    "totalSkills": 7,
+    "readyToWriteSkills": [],
+    "autoFillSkills": [],
+    "manualFillSkills": [
+      "fire",
+      "fireMultiple",
+      "spaceMonkeyBall",
+      "grenade",
+      "explosiveBarrel",
+      "cloakBoomerang",
+      "teleportBullet"
+    ]
+  },
+  "entries": [
+    {
+      "skillId": "fire",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    },
+    {
+      "skillId": "fireMultiple",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    },
+    {
+      "skillId": "grenade",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    },
+    {
+      "skillId": "teleportBullet",
+      "supplementPriority": 1,
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "dependencies": [
+        "MainChainFinalArchiveChecklistValidation.json",
+        "legacy mirror static tables",
+        "GameDesignCatalogAsset"
+      ],
+      "canAutoFill": false,
+      "meetsWriteConditions": false,
+      "writeBlockers": [
+        "字段全部为模板占位",
+        "缺少可落盘的实际目录值"
+      ],
+      "fieldFillPlan": [
+        { "fieldName": "timelineId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "bulletId", "priority": 1, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "targetMode", "priority": 1, "source": "design input", "action": "manual" },
+        { "fieldName": "cost", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "cooldown", "priority": 2, "source": "design input", "action": "manual" },
+        { "fieldName": "aoeId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "buffId", "priority": 3, "source": "legacy mirror static tables", "action": "manual" },
+        { "fieldName": "tags", "priority": 3, "source": "design input", "action": "manual" },
+        { "fieldName": "notes", "priority": 3, "source": "design input", "action": "manual" }
+      ]
+    }
+  ]
+}

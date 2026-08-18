@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalArchiveBlockingChecklist",
+  "sourceValidationPath": "Assets/Resources/Design/MainChainFinalArchiveWritebackValidation.json",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "overallStatus": "阻塞",
+  "canDirectlyWriteToGameDesignCatalog": false,
+  "entries": [
+    {
+      "skillId": "fire",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    },
+    {
+      "skillId": "fireMultiple",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    },
+    {
+      "skillId": "spaceMonkeyBall",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    },
+    {
+      "skillId": "grenade",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    },
+    {
+      "skillId": "explosiveBarrel",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    },
+    {
+      "skillId": "cloakBoomerang",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    },
+    {
+      "skillId": "teleportBullet",
+      "blockingReason": "仍存在未补齐字段，不能直接写回。",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "canManualFill": true,
+      "fieldFillPriority": [
+        { "fieldName": "timelineId", "priority": 1 },
+        { "fieldName": "bulletId", "priority": 1 },
+        { "fieldName": "targetMode", "priority": 1 },
+        { "fieldName": "cost", "priority": 2 },
+        { "fieldName": "cooldown", "priority": 2 },
+        { "fieldName": "aoeId", "priority": 3 },
+        { "fieldName": "buffId", "priority": 3 },
+        { "fieldName": "tags", "priority": 3 },
+        { "fieldName": "notes", "priority": 3 }
+      ],
+      "finalWritableToGameDesignCatalog": false
+    }
+  ]
+}

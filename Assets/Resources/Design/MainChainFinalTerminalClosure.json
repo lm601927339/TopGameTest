@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalTerminalClosure",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceExecutionRecommendationPath": "Assets/Resources/Design/MainChainFinalExecutionRecommendationSummary.json",
+  "archiveFinished": false,
+  "stopGenerating": false,
+  "noFurtherArtifactsNeeded": false,
+  "finalState": "未完成",
+  "remainingBlockedCount": 7,
+  "remainingOpenCount": 7,
+  "remainingManualFollowUpCount": 14,
+  "finalAdvice": "继续修复"
+}

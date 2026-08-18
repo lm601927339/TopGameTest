@@ -1,0 +1,308 @@
+{
+  "schemaVersion": "1.0",
+  "recordType": "MainChainFinalRepairActionList",
+  "runtimeFallbackPolicy": "legacy mirror",
+  "executionLayerTouched": false,
+  "sourceFiles": {
+    "openItems": "Assets/Resources/Design/MainChainFinalArchiveOpenItems.json",
+    "supplementChecklist": "Assets/Resources/Design/MainChainFinalArchiveSupplementChecklist.json"
+  },
+  "overallStatus": "保持开放",
+  "finalRecommendation": "人工补齐",
+  "entries": [
+    {
+      "itemId": "fire",
+      "relatedSkillId": "fire",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "fireMultiple",
+      "relatedSkillId": "fireMultiple",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "spaceMonkeyBall",
+      "relatedSkillId": "spaceMonkeyBall",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "grenade",
+      "relatedSkillId": "grenade",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "explosiveBarrel",
+      "relatedSkillId": "explosiveBarrel",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "cloakBoomerang",
+      "relatedSkillId": "cloakBoomerang",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "teleportBullet",
+      "relatedSkillId": "teleportBullet",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-fire",
+      "relatedSkillId": "fire",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-fireMultiple",
+      "relatedSkillId": "fireMultiple",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-spaceMonkeyBall",
+      "relatedSkillId": "spaceMonkeyBall",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-grenade",
+      "relatedSkillId": "grenade",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-explosiveBarrel",
+      "relatedSkillId": "explosiveBarrel",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-cloakBoomerang",
+      "relatedSkillId": "cloakBoomerang",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    },
+    {
+      "itemId": "supp-teleportBullet",
+      "relatedSkillId": "teleportBullet",
+      "missingFields": [
+        "timelineId",
+        "bulletId",
+        "aoeId",
+        "buffId",
+        "targetMode",
+        "cost",
+        "cooldown",
+        "tags",
+        "notes"
+      ],
+      "ownerHint": "design",
+      "priority": 1,
+      "blockingReason": "主链路归档字段仍处于模板占位，不能直接落盘。",
+      "canAutoResolve": false,
+      "nextAction": "补齐目录字段值并重新生成归档校验结果",
+      "finalHandling": "人工补齐"
+    }
+  ]
+}
