@@ -6,6 +6,18 @@ using UnityEngine.UI;
 public class TestManager : MonoBehaviour
 {
     private static readonly string[] FallbackSkillIds = { "shoot1", "shoot2", "shoot3", "poisonShot", "stunShot", "laser", "lightning", "haste", "regen", "grenade", "roll", "fire", "fireMultiple" };
+    private static readonly KeyCode[] DebugSkillHotkeys =
+    {
+        KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3,
+        KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6,
+        KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9
+    };
+    private static readonly string[] DebugSkillHotkeyIds =
+    {
+        "shoot1", "shoot2", "shoot3",
+        "poisonShot", "stunShot", "laser",
+        "lightning", "haste", "regen"
+    };
     private static readonly Dictionary<string, string> SkillDisplayTexts = new Dictionary<string, string>
     {
         { "shoot1", "一发子弹|单发直射" },
@@ -45,6 +57,22 @@ public class TestManager : MonoBehaviour
     private bool skillPanelLayoutLogged;
 
     private void Start() { EnsureEventSystem(); }
+
+    /// <summary>
+    /// Listens for the 1-9 test-skill shortcuts and routes them through the same learn-and-cast flow as the runtime list.
+    /// </summary>
+    private void Update()
+    {
+        for (int i = 0; i < DebugSkillHotkeys.Length; i++)
+        {
+            if (!Input.GetKeyDown(DebugSkillHotkeys[i])) continue;
+
+            string skillId = DebugSkillHotkeyIds[i];
+            Debug.Log("[TestManager] Test skill hotkey " + (i + 1) + " triggered: " + skillId);
+            SelectLearnAndCast(skillId);
+            return;
+        }
+    }
 
     // Lists known skills and refreshes the debug panel.
     public void OnBtnClickListSkills() { RefreshSkillPanel(true); }
