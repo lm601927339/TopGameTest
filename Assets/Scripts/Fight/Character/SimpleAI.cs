@@ -34,12 +34,9 @@ public class SimpleAI:MonoBehaviour{
         if (!chaState || chaState.dead == true || chaState.IsControlled) return;
 
         float timePassed = Time.fixedDeltaTime;
-        ChaState target = TargetService.FindNearestEnemy(chaState);
-        if (target == null)
-        {
-            GameObject mainActor = SceneVariants.MainActor();
-            target = mainActor ? mainActor.GetComponent<ChaState>() : null;
-        }
+        // 所有 AI 锁定都经由侦测配置和统一目标服务，不能再直接回退锁定主角，
+        // 否则隐身英雄会在没有侦测能力的敌人面前失效。
+        ChaState target = TargetService.FindNearestDetectedEnemy(chaState);
 
         float rotateTo = chaState.transform.rotation.eulerAngles.z;
         if (target != null)

@@ -526,6 +526,18 @@ public static class TargetService{
         return best;
     }
 
+    /// <summary>
+    /// 基于请求者侦测能力查找敌人。AI、召唤物和环境对象应优先走此入口，
+    /// 让隐身/无敌规则在全项目保持一致。
+    /// </summary>
+    public static ChaState FindNearestDetectedEnemy(ChaState requester, float maxDistance = float.PositiveInfinity){
+        if (requester == null) return null;
+        TargetDetectionProfile detection = requester.GetComponent<TargetDetectionProfile>();
+        bool allowInvisible = detection != null && detection.CanDetectInvisible;
+        bool allowInvincible = detection != null && detection.CanTargetInvincible;
+        return FindNearestEnemy(requester, maxDistance, allowInvisible, allowInvincible);
+    }
+
     /// <summary>判断目标是否可以被当前来源锁定。</summary>
     public static bool IsTargetable(ChaState requester, ChaState candidate, bool allowInvisible = false, bool allowInvincible = false, bool allowDead = false){
         if (candidate == null || (!allowDead && candidate.dead)) return false;

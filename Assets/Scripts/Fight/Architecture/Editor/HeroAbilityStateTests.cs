@@ -63,6 +63,64 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void DefaultEnemyTargetRuleRejectsInvisibleHero()
+    {
+        GameObject enemy = new GameObject("DefaultEnemy");
+        GameObject hero = new GameObject("InvisibleHero");
+        try
+        {
+            ChaState enemyState = enemy.AddComponent<ChaState>();
+            enemyState.side = 2;
+            ChaState heroState = hero.AddComponent<ChaState>();
+            heroState.side = 1;
+            heroState.AddState(ChaAbilityStateType.Invisible, "test", 5f);
+            enemy.transform.position = Vector3.zero;
+            hero.transform.position = Vector3.right;
+
+            // EditMode 不会驱动 ChaState 的 OnEnable 注册角色列表；这里直接验证
+            // AI 与目标服务共用的筛选谓词，避免测试结果依赖 Unity 场景生命周期。
+            Assert.That(TargetService.IsTargetable(enemyState, heroState), Is.False);
+        }
+        finally
+        {
+            Object.DestroyImmediate(hero);
+            Object.DestroyImmediate(enemy);
+        }
+    }
+
+    [Test]
+    public void DetectionEnemyTargetRuleAcceptsInvisibleHero()
+    {
+        GameObject enemy = new GameObject("DetectionEnemy");
+        GameObject hero = new GameObject("InvisibleHero");
+        try
+        {
+            ChaState enemyState = enemy.AddComponent<ChaState>();
+            enemyState.side = 2;
+            TargetDetectionProfile detection = enemy.AddComponent<TargetDetectionProfile>();
+            detection.Configure(true);
+            ChaState heroState = hero.AddComponent<ChaState>();
+            heroState.side = 1;
+            heroState.AddState(ChaAbilityStateType.Invisible, "test", 5f);
+            enemy.transform.position = Vector3.zero;
+            hero.transform.position = Vector3.right;
+
+            Assert.That(
+                TargetService.IsTargetable(
+                    enemyState,
+                    heroState,
+                    detection.CanDetectInvisible,
+                    detection.CanTargetInvincible),
+                Is.True);
+        }
+        finally
+        {
+            Object.DestroyImmediate(hero);
+            Object.DestroyImmediate(enemy);
+        }
+    }
+
+    [Test]
     public void PoisonImmuneTargetReceivesNeitherStateNorBuff()
     {
         GameObject target = new GameObject("PoisonImmuneTarget");
