@@ -76,6 +76,11 @@ public class DamageManager : MonoBehaviour{
             ));
             //按照游戏设计的规则跳数字，如果要有暴击，也可以丢在策划脚本函数里（lua可以返回多参数）也可以随便怎么写
             SceneVariants.PopUpNumberOnCharacter(dInfo.defender, Mathf.Abs(dVal), isHeal);
+            // 只有实际扣除了非治疗生命的受击才发出命中警报；格挡、无敌、治疗与零伤害都不制造假线索。
+            if (!isHeal && dVal > 0)
+            {
+                SoundAlertService.ReportImpact(dInfo.defender.transform.position, dInfo.attacker);
+            }
         }
 
         //伤害流程走完，添加buff

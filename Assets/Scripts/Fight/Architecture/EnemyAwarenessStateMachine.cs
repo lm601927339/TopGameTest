@@ -49,7 +49,8 @@ public struct EnemyAwarenessDecision
 
 /// <summary>
 /// 纯逻辑敌人感知状态机，便于 EditMode 测试且可被未来的复杂 EnemyBrain 复用。
-/// 它只记录最后一次可见位置，不保存目标引用，因此隐身、死亡或销毁均能安全切换到搜索。
+/// 它只记录最后一次确认的位置，不保存目标引用，因此隐身、死亡或销毁均能安全切换到搜索。
+/// 可见目标与声音警报都能刷新该位置，但调用方必须始终让可见目标优先。
 /// </summary>
 public sealed class EnemyAwarenessStateMachine
 {
@@ -104,6 +105,18 @@ public sealed class EnemyAwarenessStateMachine
         float arrivalDistance = Mathf.Max(0.01f, settings.searchArrivalDistance);
         bool needsMove = (lastSeenPosition - selfPosition).sqrMagnitude > arrivalDistance * arrivalDistance;
         return new EnemyAwarenessDecision(state, lastSeenPosition, needsMove);
+    }
+
+    /// <summary>
+    /// 用敌对声音刷新调查位置。声音不包含目标引用，因此只会让 AI 前往发生地点搜索，
+    /// 不会绕过隐身、视野或遮挡规则持续追踪真实目标。
+    /// </summary>
+    public void InvestigateAlert(Vector3 alertPosition, EnemyAwarenessSettings settings)
+    {
+        lastSeenPosition = alertPosition;
+        hasLastSeenPosition = true;
+        remainingSearchTime = settings.searchDuration;
+        state = EnemyAwarenessState.Search;
     }
 }
 

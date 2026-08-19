@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        // 声音警报只服务于当前战局，场景切换时不能让新生成的敌人调查上一局的位置。
+        SoundAlertService.Clear();
         GameRuntime.Initialize(this, designConfig);
     }
 
@@ -171,6 +173,9 @@ public class GameManager : MonoBehaviour
         GameObject bulletObj = CreateFromPrefab(Config.bulletPrefabPath, bulletLauncher.firePosition);
         if (!bulletObj) return;
 
+        // 只在子弹对象实际生成后发出开火警报，避免资源缺失时产生不存在的声音线索。
+        SoundAlertService.ReportGunfire(bulletLauncher.firePosition, bulletLauncher.caster);
+
         bulletObj.transform.RotateAround(bulletObj.transform.position, Vector3.forward, bulletLauncher.fireDegree);
         BulletState bulletState = bulletObj.GetComponent<BulletState>();
         if (bulletState)
@@ -202,6 +207,12 @@ public class GameManager : MonoBehaviour
     {
         GameObject aoeObj = CreateFromPrefab(Config.aoePrefabPath, aoeLauncher.position);
         if (!aoeObj) return;
+
+        // 目前只有策划表中的炸弹爆炸属于调查型爆炸声，毒雾、黑洞等 AoE 不应被误报为爆炸。
+        if (aoeLauncher.model.id == "BoomExplosive")
+        {
+            SoundAlertService.ReportExplosion(aoeLauncher.position, aoeLauncher.caster);
+        }
 
         AoeState aoeState = aoeObj.GetComponent<AoeState>();
         if (aoeState)

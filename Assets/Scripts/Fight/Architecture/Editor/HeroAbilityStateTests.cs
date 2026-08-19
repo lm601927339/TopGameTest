@@ -196,6 +196,81 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void SoundAlertIgnoresSameSideAndRespectsHearingRange()
+    {
+        SoundAlertService.Clear();
+        try
+        {
+            int alertSequence = SoundAlertService.Report(SoundAlertKind.Gunfire, Vector3.zero, 1, 9f, 2f);
+            SoundAlert alert;
+
+            Assert.That(
+                SoundAlertService.TryGetLatestHostileAlert(new Vector3(5f, 0f, 0f), 2, 10f, 0, out alert),
+                Is.True);
+            Assert.That(alert.sequence, Is.EqualTo(alertSequence));
+            Assert.That(
+                SoundAlertService.TryGetLatestHostileAlert(Vector3.zero, 1, 10f, 0, out alert),
+                Is.False);
+            Assert.That(
+                SoundAlertService.TryGetLatestHostileAlert(new Vector3(10f, 0f, 0f), 2, 10f, 0, out alert),
+                Is.False);
+        }
+        finally
+        {
+            SoundAlertService.Clear();
+        }
+    }
+
+    [Test]
+    public void SoundAlertRefreshesSearchInterestPosition()
+    {
+        SoundAlertService.Clear();
+        try
+        {
+            EnemyAwarenessStateMachine awareness = new EnemyAwarenessStateMachine();
+            EnemyAwarenessSettings settings = new EnemyAwarenessSettings(2f, 0.25f);
+            Vector3 alertPosition = new Vector3(7f, -2f, 0f);
+            SoundAlertService.Report(SoundAlertKind.Explosion, alertPosition, 1, 14f, 2f);
+            SoundAlert alert;
+
+            Assert.That(
+                SoundAlertService.TryGetLatestHostileAlert(Vector3.zero, 2, 10f, 0, out alert),
+                Is.True);
+            awareness.InvestigateAlert(alert.position, settings);
+            EnemyAwarenessDecision decision = awareness.Advance(false, Vector3.zero, Vector3.zero, 0.1f, settings);
+
+            Assert.That(decision.state, Is.EqualTo(EnemyAwarenessState.Search));
+            Assert.That(decision.shouldMoveToInterest, Is.True);
+            Assert.That(decision.interestPosition, Is.EqualTo(alertPosition));
+        }
+        finally
+        {
+            SoundAlertService.Clear();
+        }
+    }
+
+    [Test]
+    public void VisibleTargetTakesPriorityOverSoundAlert()
+    {
+        EnemyAwarenessStateMachine awareness = new EnemyAwarenessStateMachine();
+        EnemyAwarenessSettings settings = new EnemyAwarenessSettings(2f, 0.25f);
+        Vector3 alertPosition = new Vector3(-4f, 1f, 0f);
+        Vector3 visibleTargetPosition = new Vector3(3f, 2f, 0f);
+
+        awareness.InvestigateAlert(alertPosition, settings);
+        EnemyAwarenessDecision decision = awareness.Advance(
+            true,
+            visibleTargetPosition,
+            Vector3.zero,
+            0.1f,
+            settings);
+
+        Assert.That(decision.state, Is.EqualTo(EnemyAwarenessState.Chase));
+        Assert.That(decision.interestPosition, Is.EqualTo(visibleTargetPosition));
+        Assert.That(awareness.LastSeenPosition, Is.EqualTo(visibleTargetPosition));
+    }
+
+    [Test]
     public void PoisonImmuneTargetReceivesNeitherStateNorBuff()
     {
         GameObject target = new GameObject("PoisonImmuneTarget");

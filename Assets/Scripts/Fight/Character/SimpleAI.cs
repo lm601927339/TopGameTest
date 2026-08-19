@@ -26,6 +26,8 @@ public class SimpleAI:MonoBehaviour{
 
     private ChaState chaState;
     private EnemyAwarenessProfile awarenessProfile;
+    private SoundAlertProfile soundAlertProfile;
+    private int lastConsumedSoundAlertSequence;
 
     /// <summary>供战斗调试和后续行为树读取当前感知阶段。</summary>
     public EnemyAwarenessState AwarenessState { get { return awareness.State; } }
@@ -33,6 +35,7 @@ public class SimpleAI:MonoBehaviour{
     void Start() {
         chaState = this.gameObject.GetComponent<ChaState>();
         awarenessProfile = this.gameObject.GetComponent<EnemyAwarenessProfile>();
+        soundAlertProfile = this.gameObject.GetComponent<SoundAlertProfile>();
         moveDegree = this.transform.rotation.eulerAngles.z;
     }
 
@@ -46,6 +49,25 @@ public class SimpleAI:MonoBehaviour{
         EnemyAwarenessSettings awarenessSettings = awarenessProfile != null
             ? awarenessProfile.Settings
             : EnemyAwarenessSettings.Default;
+        // 视觉目标始终优先：即使附近刚有爆炸，只要当前看得见敌人就继续追击，
+        // 防止声音事件把已经确认的目标意图错误覆盖掉。
+        if (target == null)
+        {
+            SoundAlertSettings soundSettings = soundAlertProfile != null
+                ? soundAlertProfile.Settings
+                : SoundAlertSettings.Default;
+            SoundAlert soundAlert;
+            if (SoundAlertService.TryGetLatestHostileAlert(
+                transform.position,
+                chaState.side,
+                soundSettings.hearingRange,
+                lastConsumedSoundAlertSequence,
+                out soundAlert))
+            {
+                awareness.InvestigateAlert(soundAlert.position, awarenessSettings);
+                lastConsumedSoundAlertSequence = soundAlert.sequence;
+            }
+        }
         EnemyAwarenessDecision awarenessDecision = awareness.Advance(
             target != null,
             target != null ? target.transform.position : Vector3.zero,
@@ -63,7 +85,7 @@ public class SimpleAI:MonoBehaviour{
         }
         else if (awarenessDecision.shouldMoveToInterest)
         {
-            // 目标隐身或离开侦测范围时，只能前往其最后一次被确认的位置，
+            // 目标隐身、离开侦测范围或听到敌对声音时，只能前往最后一次确认的位置，
             // 不保留目标引用，也不会继续追踪目标的实时坐标。
             desiredMove = awarenessDecision.interestPosition - transform.position;
             rotateTo = Mathf.Atan2(desiredMove.y, desiredMove.x) * 180.00f / Mathf.PI;
