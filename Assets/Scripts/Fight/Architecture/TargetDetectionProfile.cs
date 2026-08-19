@@ -24,9 +24,12 @@ public class TargetDetectionProfile : MonoBehaviour
     [Tooltip("忽略地图阻挡。用于雷达、真视领域等特殊单位；普通敌人默认关闭。")]
     [SerializeField] private bool ignoreObstacleOcclusion;
 
+    [Tooltip("忽略云雾等全局天气造成的视野距离缩短。用于雷达、真视领域等特殊单位；普通敌人默认关闭。")]
+    [SerializeField] private bool ignoreWeatherVisibility;
+
     public bool CanDetectInvisible { get { return canDetectInvisible; } }
     public bool CanTargetInvincible { get { return canTargetInvincible; } }
-    public TargetDetectionSettings Settings { get { return new TargetDetectionSettings(sightRange, viewAngle, ignoreObstacleOcclusion); } }
+    public TargetDetectionSettings Settings { get { return new TargetDetectionSettings(sightRange, viewAngle, ignoreObstacleOcclusion, ignoreWeatherVisibility); } }
 
     /// <summary>供生成器和测试在运行时配置侦测规则，不要求预制体先增加字段。</summary>
     public void Configure(bool detectInvisible, bool targetInvincible = false)
@@ -35,12 +38,13 @@ public class TargetDetectionProfile : MonoBehaviour
         canTargetInvincible = targetInvincible;
     }
 
-    /// <summary>供特殊敌人、测试和关卡生成器设置距离、视野角与穿墙侦测，不要求先修改预制体。</summary>
-    public void ConfigureVision(float newSightRange, float newViewAngle, bool newIgnoreObstacleOcclusion = false)
+    /// <summary>供特殊敌人、测试和关卡生成器设置距离、视野角及天气/遮挡例外，不要求先修改预制体。</summary>
+    public void ConfigureVision(float newSightRange, float newViewAngle, bool newIgnoreObstacleOcclusion = false, bool newIgnoreWeatherVisibility = false)
     {
-        TargetDetectionSettings settings = new TargetDetectionSettings(newSightRange, newViewAngle, newIgnoreObstacleOcclusion);
+        TargetDetectionSettings settings = new TargetDetectionSettings(newSightRange, newViewAngle, newIgnoreObstacleOcclusion, newIgnoreWeatherVisibility);
         sightRange = settings.sightRange;
         viewAngle = settings.viewAngle;
         ignoreObstacleOcclusion = settings.ignoreObstacleOcclusion;
+        ignoreWeatherVisibility = settings.ignoreWeatherVisibility;
     }
 }

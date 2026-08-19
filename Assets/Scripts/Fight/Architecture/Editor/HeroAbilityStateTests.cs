@@ -184,6 +184,41 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void WeatherVisibilityLimitsSightUnlessDetectionIgnoresWeather()
+    {
+        WeatherVisibilityService.ResetForTests();
+        GameObject weatherObject = new GameObject("CloudyWeather");
+        try
+        {
+            WeatherController weather = weatherObject.AddComponent<WeatherController>();
+            // 本用例只验证全局视野，不创建局部环境体积，避免 EditMode 的运行时销毁限制干扰断言。
+            weather.applyLocalVolume = false;
+            weather.ConfigureVisibilityMultiplier(0.5f);
+            weather.SetWeather(WeatherType.Cloudy, -1f, Vector2.zero, 1f, true);
+            TargetDetectionSettings ordinarySight = new TargetDetectionSettings(12f, 360f, true);
+            TargetDetectionSettings radarSight = new TargetDetectionSettings(12f, 360f, true, true);
+            Vector3 targetPosition = new Vector3(8f, 0f, 0f);
+
+            Assert.That(
+                TargetVisibilityService.Evaluate(Vector3.zero, Vector3.right, targetPosition, ordinarySight),
+                Is.EqualTo(TargetVisibilityResult.ObscuredByWeather));
+            Assert.That(
+                TargetVisibilityService.Evaluate(Vector3.zero, Vector3.right, targetPosition, radarSight),
+                Is.EqualTo(TargetVisibilityResult.Visible));
+
+            weather.ClearWeather();
+            Assert.That(
+                TargetVisibilityService.Evaluate(Vector3.zero, Vector3.right, targetPosition, ordinarySight),
+                Is.EqualTo(TargetVisibilityResult.Visible));
+        }
+        finally
+        {
+            Object.DestroyImmediate(weatherObject);
+            WeatherVisibilityService.ResetForTests();
+        }
+    }
+
+    [Test]
     public void MapLineOfSightBlocksOpaqueGroundGrid()
     {
         GridInfo[,] grid = new GridInfo[5, 1];

@@ -5,6 +5,7 @@ public enum TargetVisibilityResult
 {
     Visible,
     OutOfRange,
+    ObscuredByWeather,
     OutsideViewAngle,
     BlockedByObstacle
 }
@@ -18,17 +19,19 @@ public struct TargetDetectionSettings
     public float sightRange;
     public float viewAngle;
     public bool ignoreObstacleOcclusion;
+    public bool ignoreWeatherVisibility;
 
-    public TargetDetectionSettings(float sightRange, float viewAngle, bool ignoreObstacleOcclusion)
+    public TargetDetectionSettings(float sightRange, float viewAngle, bool ignoreObstacleOcclusion, bool ignoreWeatherVisibility = false)
     {
         this.sightRange = Mathf.Max(0.01f, sightRange);
         this.viewAngle = Mathf.Clamp(viewAngle, 1f, 360f);
         this.ignoreObstacleOcclusion = ignoreObstacleOcclusion;
+        this.ignoreWeatherVisibility = ignoreWeatherVisibility;
     }
 
     public static TargetDetectionSettings Default
     {
-        get { return new TargetDetectionSettings(DefaultSightRange, DefaultViewAngle, false); }
+        get { return new TargetDetectionSettings(DefaultSightRange, DefaultViewAngle, false, false); }
     }
 }
 
@@ -50,6 +53,13 @@ public static class TargetVisibilityService
         float distance = toTarget.magnitude;
         float allowedRange = Mathf.Min(settings.sightRange, externalMaxDistance);
         if (distance > allowedRange) return TargetVisibilityResult.OutOfRange;
+
+        // 云雾和暴风雨只缩短视觉距离，不影响听觉警报；雷达/真视类侦测可显式忽略此限制。
+        if (!settings.ignoreWeatherVisibility)
+        {
+            float weatherRange = allowedRange * WeatherVisibilityService.GetSightRangeMultiplier();
+            if (distance > weatherRange) return TargetVisibilityResult.ObscuredByWeather;
+        }
 
         if (distance > 0.0001f && settings.viewAngle < 359.99f)
         {

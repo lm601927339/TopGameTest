@@ -46,6 +46,9 @@ public class WeatherController : MonoBehaviour{
     public int priority = 15;
     public float weatherRadius = 8f;
     public int weatherDamagePerTick = 5;
+    [Range(0.05f, 1f)]
+    [Tooltip("天气开启降低可见度时使用的视野距离倍率。0.55 表示默认 12 米视野缩短为约 6.6 米。")]
+    public float loweredVisibilityMultiplier = 0.55f;
     public GameObject weatherVolumePrefab;
     public EnvironmentVolume weatherVolume;
 
@@ -57,10 +60,25 @@ public class WeatherController : MonoBehaviour{
     public WeatherState CurrentState{ get { return currentWeather; } }
     public bool IsWeatherActive{ get { return CurrentWeather != WeatherType.Clear; } }
     public GameObject SpawnedWeatherVolume{ get { return spawnedWeatherVolume; } }
+    /// <summary>仅在当前天气明确要求降低可见度时影响全局视野；否则返回 1。</summary>
+    public float VisibilityRangeMultiplier{
+        get{
+            if (!IsWeatherActive || currentWeather == null || !currentWeather.lowerVisibility) return 1f;
+            return Mathf.Clamp(loweredVisibilityMultiplier, 0.05f, 1f);
+        }
+    }
 
     private void Awake(){
         if (currentWeather == null) currentWeather = new WeatherState();
         if (string.IsNullOrEmpty(sourceId)) sourceId = "weather-" + GetInstanceID();
+    }
+
+    private void OnEnable(){
+        WeatherVisibilityService.Register(this);
+    }
+
+    private void OnDisable(){
+        WeatherVisibilityService.Unregister(this);
     }
 
     private void FixedUpdate(){
@@ -90,6 +108,8 @@ public class WeatherController : MonoBehaviour{
 
     /// <summary>设置天气并立即刷新局部环境体积。</summary>
     public void SetWeather(WeatherType weatherType, float duration = -1f, Vector2 globalWind = default(Vector2), float movementStrength = 1f, bool lowerVisibility = false){
+        // EditMode 工具可能在生命周期回调前直接设置天气；这里再次登记，保证视野规则立刻生效。
+        WeatherVisibilityService.Register(this);
         if (currentWeather == null) currentWeather = new WeatherState();
         currentWeather.weatherType = weatherType;
         currentWeather.duration = duration;
@@ -122,6 +142,11 @@ public class WeatherController : MonoBehaviour{
         currentWeather.globalWind = Vector2.zero;
         RemoveGlobalWind();
         DisableLocalVolume();
+    }
+
+    /// <summary>供特殊天气、调试按钮和测试设置降视野倍率；不要求修改天气预制体。</summary>
+    public void ConfigureVisibilityMultiplier(float multiplier){
+        loweredVisibilityMultiplier = Mathf.Clamp(multiplier, 0.05f, 1f);
     }
 
     private EnvironmentVolumeKind GetVolumeKind(){
