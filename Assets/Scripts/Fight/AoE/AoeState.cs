@@ -241,3 +241,174 @@ public class AoeState : MonoBehaviour{
         }
     }
 }
+
+/// <summary>阶段四环境体积类型，环境规则与视觉预制体解耦。</summary>
+public enum EnvironmentVolumeKind{
+    Cloud = 0,
+    Tornado = 1,
+    MagneticField = 2,
+    ToxicGas = 3,
+    Radiation = 4,
+    FireOil = 5,
+    IceWall = 6,
+    Lightning = 7
+}
+
+/// <summary>
+/// 通用环境体积。通常与 AoeState 挂在同一个对象上，由碰撞范围提供角色列表。
+/// </summary>
+public class EnvironmentVolume : MonoBehaviour{
+    public EnvironmentVolumeKind volumeKind = EnvironmentVolumeKind.Cloud;
+    public string sourceId = "environment";
+    public float radius = 2f;
+    public Vector2 direction = Vector2.zero;
+    public float strength = 2f;
+    public float maxSpeed = 8f;
+    public float tickInterval = 0.1f;
+    public float duration = -1f;
+    public float statusDuration = 0.25f;
+    public int priority = 10;
+    public bool affectEnemies = true;
+    public bool affectAllies = false;
+    /// <summary>独立环境体积的施法者；为空时从 AoeState.caster 读取。</summary>
+    public GameObject caster;
+    /// <summary>毒气、辐射、火油和闪电的每次采样伤害。</summary>
+    public int damagePerTick = 5;
+    public bool applyDamage = true;
+
+    private AoeState aoeState;
+    private float timeElapsed;
+    private float timeToTick;
+    private readonly List<ChaState> affectedCharacters = new List<ChaState>();
+
+    private void Start(){
+        aoeState = GetComponent<AoeState>();
+        if (caster == null && aoeState != null) caster = aoeState.caster;
+        if (string.IsNullOrEmpty(sourceId)) sourceId = "environment-" + GetInstanceID();
+        if (aoeState != null && aoeState.caster != null){
+            ChaState casterState = aoeState.caster.GetComponent<ChaState>();
+            if (casterState != null && radius <= 0f) radius = aoeState.radius;
+        }
+    }
+
+    private void FixedUpdate(){
+        timeElapsed += Time.fixedDeltaTime;
+        if (duration >= 0f && timeElapsed >= duration){
+            enabled = false;
+            RemoveEffects();
+            return;
+        }
+
+        ApplyMotionEffects();
+        timeToTick -= Time.fixedDeltaTime;
+        if (timeToTick <= 0f){
+            timeToTick = Mathf.Max(0.02f, tickInterval);
+            ApplyNow();
+        }
+    }
+
+    /// <summary>立即采样一次范围内的环境效果，天气控制器会调用此接口做局部环境逻辑。</summary>
+    public void ApplyNow(){
+        List<ChaState> targets = GetTargets();
+        for (int i = 0; i < targets.Count; i++) ApplyToTarget(targets[i]);
+    }
+
+    /// <summary>收集 AoeState 碰撞列表；独立体积没有碰撞状态时退化为距离扫描。</summary>
+    private List<ChaState> GetTargets(){
+        affectedCharacters.Clear();
+        if (aoeState != null && aoeState.characterInRange != null && aoeState.characterInRange.Count > 0){
+            for (int i = 0; i < aoeState.characterInRange.Count; i++){
+                GameObject target = aoeState.characterInRange[i];
+                ChaState state = target ? target.GetComponent<ChaState>() : null;
+                if (state != null && !state.dead && IsAllowed(state) && !affectedCharacters.Contains(state)) affectedCharacters.Add(state);
+            }
+            return affectedCharacters;
+        }
+
+        Vector2 center = transform.position;
+        IReadOnlyList<ChaState> allCharacters = ChaState.ActiveCharacters;
+        for (int i = 0; i < allCharacters.Count; i++){
+            ChaState state = allCharacters[i];
+            if (state == null || state.dead || (radius > 0f && Vector2.Distance(center, state.transform.position) > radius)) continue;
+            if (IsAllowed(state)) affectedCharacters.Add(state);
+        }
+        return affectedCharacters;
+    }
+
+    /// <summary>按施法者有效阵营过滤友军和敌军，伪装/傀儡状态因此可以正确影响环境。</summary>
+    private bool IsAllowed(ChaState target){
+        if (target == null) return false;
+        ChaState casterState = caster ? caster.GetComponent<ChaState>() : (aoeState != null && aoeState.caster ? aoeState.caster.GetComponent<ChaState>() : null);
+        if (casterState == null) return affectEnemies || affectAllies;
+        bool ally = casterState.EffectiveSide == target.EffectiveSide;
+        return ally ? affectAllies : affectEnemies;
+    }
+
+    /// <summary>持续施加龙卷风和磁力等运动效果；状态类效果在采样时处理。</summary>
+    private void ApplyMotionEffects(){
+        if (volumeKind != EnvironmentVolumeKind.Tornado && volumeKind != EnvironmentVolumeKind.MagneticField) return;
+        List<ChaState> targets = GetTargets();
+        Vector2 center = transform.position;
+        for (int i = 0; i < targets.Count; i++){
+            ChaState target = targets[i];
+            Vector2 offset = (Vector2)target.transform.position - center;
+            Vector2 force = direction;
+            if (volumeKind == EnvironmentVolumeKind.Tornado){
+                Vector2 radial = offset.sqrMagnitude > 0.001f ? offset.normalized : Vector2.up;
+                force = new Vector2(-radial.y, radial.x) * strength + Vector2.up * strength;
+            }
+            if (force.sqrMagnitude <= 0.0001f) continue;
+            force = Vector2.ClampMagnitude(force, Mathf.Max(0.01f, maxSpeed));
+            target.AddOrRefreshMotionInfluence(new MotionInfluence(sourceId, force, 0.15f, priority, MotionInfluenceBlendMode.Additive, true));
+        }
+    }
+
+    /// <summary>采样一次状态和持续伤害，伤害统一排入 DamageManager。</summary>
+    private void ApplyToTarget(ChaState target){
+        string stateSource = sourceId + "-state";
+        switch (volumeKind){
+            case EnvironmentVolumeKind.ToxicGas:
+                target.AddState(ChaAbilityStateType.Poisoned, stateSource, statusDuration, priority);
+                QueueDamage(target, DamageInfoTag.periodDamage);
+                break;
+            case EnvironmentVolumeKind.Radiation:
+                target.AddState(ChaAbilityStateType.Radiated, stateSource, statusDuration, priority);
+                QueueDamage(target, DamageInfoTag.periodDamage);
+                break;
+            case EnvironmentVolumeKind.FireOil:
+                target.AddState(ChaAbilityStateType.Burning, stateSource, statusDuration, priority);
+                QueueDamage(target, DamageInfoTag.periodDamage);
+                break;
+            case EnvironmentVolumeKind.IceWall:
+                target.AddState(ChaAbilityStateType.Frozen, stateSource, statusDuration, priority);
+                break;
+            case EnvironmentVolumeKind.Lightning:
+                QueueDamage(target, DamageInfoTag.directDamage);
+                break;
+        }
+    }
+
+    private void QueueDamage(ChaState target, DamageInfoTag tag){
+        if (!applyDamage || damagePerTick <= 0 || target == null) return;
+        GameObject attacker = caster != null ? caster : (aoeState != null ? aoeState.caster : null);
+        SceneVariants.CreateDamage(attacker, target.gameObject, new Damage(damagePerTick), 0f, 0f, new DamageInfoTag[]{tag});
+    }
+
+    /// <summary>移除环境来源留下的运动影响和状态，避免清除后仍残留控制。</summary>
+    private void RemoveEffects(){
+        IReadOnlyList<ChaState> allCharacters = ChaState.ActiveCharacters;
+        string stateSource = sourceId + "-state";
+        for (int i = 0; i < allCharacters.Count; i++){
+            ChaState state = allCharacters[i];
+            if (state == null) continue;
+            state.RemoveForceMove(sourceId);
+            state.RemoveState(ChaAbilityStateType.Poisoned, stateSource);
+            state.RemoveState(ChaAbilityStateType.Radiated, stateSource);
+            state.RemoveState(ChaAbilityStateType.Burning, stateSource);
+            state.RemoveState(ChaAbilityStateType.Frozen, stateSource);
+        }
+    }
+
+    private void OnDestroy(){
+        RemoveEffects();
+    }}

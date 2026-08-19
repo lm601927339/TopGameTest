@@ -17,6 +17,12 @@ namespace DesignerScripts
         public const string AddBuffToCaster = "AddBuffToCaster";
         public const string CasterAddAmmo = "CasterAddAmmo";
         public const string SummonCharacter = "SummonCharacter";
+        public const string ApplyAbilityState = "ApplyAbilityState";
+        public const string RemoveAbilityState = "RemoveAbilityState";
+        public const string ControlNearestMonster = "ControlNearestMonster";
+        public const string SpawnAbilityClone = "SpawnAbilityClone";
+        public const string SummonAbilityLightning = "SummonAbilityLightning";
+        public const string SetWeather = "SetWeather";
     }
 
     public static class TimelineEventRegistry

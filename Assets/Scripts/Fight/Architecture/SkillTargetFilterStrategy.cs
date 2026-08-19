@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 public enum SkillTargetRelationKind
 {
@@ -283,6 +284,8 @@ public static class SkillTargetFilterStrategy
 
     private static object ResolveTeamValue(object unit)
     {
+        ChaState chaState = unit as ChaState;
+        if (chaState != null) return chaState.EffectiveSide;
         string[] memberNames = { "teamId", "team", "camp", "faction", "side", "group", "party", "campId", "ownerTeamId" };
         foreach (string memberName in memberNames)
         {
@@ -498,5 +501,38 @@ public sealed class SkillTargetCollectionResult
         }
 
         return lines;
+    }
+}
+
+
+/// <summary>统一目标服务：AI、技能和环境目标查询都经过同一套阵营与状态规则。</summary>
+public static class TargetService{
+    /// <summary>查找最近的敌对角色，默认过滤死亡、无敌和隐身目标。</summary>
+    public static ChaState FindNearestEnemy(ChaState requester, float maxDistance = float.PositiveInfinity, bool allowInvisible = false, bool allowInvincible = false){
+        if (requester == null) return null;
+        ChaState best = null;
+        float bestDistance = maxDistance * maxDistance;
+        IReadOnlyList<ChaState> candidates = ChaState.ActiveCharacters;
+        for (int i = 0; i < candidates.Count; i++){
+            ChaState candidate = candidates[i];
+            if (!IsTargetable(requester, candidate, allowInvisible, allowInvincible, false)) continue;
+            Vector3 delta = candidate.transform.position - requester.transform.position;
+            float distance = delta.x * delta.x + delta.y * delta.y;
+            if (distance < bestDistance){
+                best = candidate;
+                bestDistance = distance;
+            }
+        }
+        return best;
+    }
+
+    /// <summary>判断目标是否可以被当前来源锁定。</summary>
+    public static bool IsTargetable(ChaState requester, ChaState candidate, bool allowInvisible = false, bool allowInvincible = false, bool allowDead = false){
+        if (candidate == null || (!allowDead && candidate.dead)) return false;
+        if (requester != null && ReferenceEquals(requester, candidate)) return false;
+        if (requester != null && requester.EffectiveSide == candidate.EffectiveSide) return false;
+        if (!allowInvisible && candidate.IsInvisible) return false;
+        if (!allowInvincible && candidate.IsInvincible) return false;
+        return true;
     }
 }

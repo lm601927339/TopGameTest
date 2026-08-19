@@ -24,7 +24,13 @@ namespace DesignerScripts
             {TimelineEventIds.CreateAoE, CreateAoE},
             {TimelineEventIds.AddBuffToCaster, AddBuffToCaster},
             {TimelineEventIds.CasterAddAmmo, CasterAddAmmo},
-            {TimelineEventIds.SummonCharacter, SummonCharacter}
+            {TimelineEventIds.SummonCharacter, SummonCharacter},
+            {TimelineEventIds.ApplyAbilityState, ApplyAbilityState},
+            {TimelineEventIds.RemoveAbilityState, RemoveAbilityState},
+            {TimelineEventIds.ControlNearestMonster, ControlNearestMonster},
+            {TimelineEventIds.SpawnAbilityClone, SpawnAbilityClone},
+            {TimelineEventIds.SummonAbilityLightning, SummonAbilityLightning},
+            {TimelineEventIds.SetWeather, SetWeather}
         };
 
         public static void EnsureInitialized()
@@ -383,5 +389,75 @@ namespace DesignerScripts
             }
         }
 
+        /// <summary>时间轴统一申请能力状态，参数依次为状态、来源、持续时间、优先级、伪装阵营。</summary>
+        private static void ApplyAbilityState(TimelineObj timelineObj, params object[] args){
+            if (!timelineObj.caster || args.Length <= 0) return;
+            ChaState state = timelineObj.caster.GetComponent<ChaState>();
+            if (state == null) return;
+            ChaAbilityStateType stateType = args[0] is ChaAbilityStateType ? (ChaAbilityStateType)args[0] : (ChaAbilityStateType)(int)args[0];
+            string sourceId = args.Length > 1 ? (string)args[1] : "timeline-ability";
+            float duration = args.Length > 2 ? (float)args[2] : -1f;
+            int priority = args.Length > 3 ? (int)args[3] : 20;
+            int sideOverride = args.Length > 4 ? (int)args[4] : int.MinValue;
+            state.AddState(stateType, sourceId, duration, priority, sideOverride);
+        }
+
+        /// <summary>时间轴按来源清理能力状态，避免技能结束后残留隐身或伪装。</summary>
+        private static void RemoveAbilityState(TimelineObj timelineObj, params object[] args){
+            if (!timelineObj.caster || args.Length <= 0) return;
+            ChaState state = timelineObj.caster.GetComponent<ChaState>();
+            if (state == null) return;
+            ChaAbilityStateType stateType = args[0] is ChaAbilityStateType ? (ChaAbilityStateType)args[0] : (ChaAbilityStateType)(int)args[0];
+            string sourceId = args.Length > 1 ? (string)args[1] : null;
+            state.RemoveState(stateType, sourceId);
+        }
+
+        /// <summary>时间轴控制最近敌方怪物，结束后由控制权自动释放并恢复 AI。</summary>
+        private static void ControlNearestMonster(TimelineObj timelineObj, params object[] args){
+            if (!timelineObj.caster) return;
+            ChaState controller = timelineObj.caster.GetComponent<ChaState>();
+            if (controller == null) return;
+            float radius = args.Length > 0 ? (float)args[0] : float.PositiveInfinity;
+            float duration = args.Length > 1 ? (float)args[1] : 3f;
+            string sourceId = args.Length > 2 ? (string)args[2] : "timeline-control";
+            int priority = args.Length > 3 ? (int)args[3] : 100;
+            ChaState target = TargetService.FindNearestEnemy(controller, radius);
+            AbilityEffectService.ControlMonster(controller, target, sourceId, duration, priority);
+        }
+
+        /// <summary>时间轴创建限时分身或诱饵，参数为预制体、偏移、时长、是否诱饵、来源。</summary>
+        private static void SpawnAbilityClone(TimelineObj timelineObj, params object[] args){
+            if (!timelineObj.caster || args.Length <= 0) return;
+            ChaState source = timelineObj.caster.GetComponent<ChaState>();
+            GameObject prefab = args[0] as GameObject;
+            Vector3 offset = args.Length > 1 ? (Vector3)args[1] : Vector3.right;
+            float duration = args.Length > 2 ? (float)args[2] : 5f;
+            bool decoy = args.Length > 3 && (bool)args[3];
+            string sourceId = args.Length > 4 ? (string)args[4] : "timeline-clone";
+            AbilityEffectService.SpawnClone(source, prefab, offset, duration, decoy, sourceId);
+        }
+
+        /// <summary>时间轴调用统一闪电能力，伤害仍排入 DamageManager。</summary>
+        private static void SummonAbilityLightning(TimelineObj timelineObj, params object[] args){
+            if (!timelineObj.caster) return;
+            ChaState caster = timelineObj.caster.GetComponent<ChaState>();
+            float radius = args.Length > 0 ? (float)args[0] : 5f;
+            int damage = args.Length > 1 ? (int)args[1] : 10;
+            float stunDuration = args.Length > 2 ? (float)args[2] : 0.5f;
+            string sourceId = args.Length > 3 ? (string)args[3] : "timeline-lightning";
+            AbilityEffectService.SummonLightning(caster, radius, damage, stunDuration, sourceId);
+        }
+        /// <summary>时间轴切换天气，参数依次为天气类型、持续时间、全局风、风力和是否降低可见度。</summary>
+        private static void SetWeather(TimelineObj timelineObj, params object[] args){
+            WeatherController controller = timelineObj != null && timelineObj.caster != null ? timelineObj.caster.GetComponent<WeatherController>() : null;
+            if (controller == null) controller = Object.FindObjectOfType<WeatherController>();
+            if (controller == null || args.Length <= 0) return;
+            WeatherType weatherType = args[0] is WeatherType ? (WeatherType)args[0] : (WeatherType)(int)args[0];
+            float duration = args.Length > 1 ? (float)args[1] : -1f;
+            Vector2 globalWind = args.Length > 2 ? (Vector2)args[2] : Vector2.zero;
+            float movementStrength = args.Length > 3 ? (float)args[3] : 1f;
+            bool lowerVisibility = args.Length > 4 && (bool)args[4];
+            controller.SetWeather(weatherType, duration, globalWind, movementStrength, lowerVisibility);
+        }
     }
 }

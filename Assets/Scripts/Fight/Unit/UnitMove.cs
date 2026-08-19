@@ -87,11 +87,29 @@ public class UnitMove : MonoBehaviour
         canMove = false;
     }
 
+    /// <summary>
+    /// 设置单位移动模式。钻地、飞行和爬墙都通过同一套地图碰撞接口执行。
+    /// </summary>
+    public void SetMoveType(MoveType toType){
+        this.moveType = toType;
+    }
+
+    /// <summary>读取当前移动模式，供角色状态系统和调试工具使用。</summary>
+    public MoveType GetMoveType(){
+        return this.moveType;
+    }
+
+    /// <summary>重新开启移动能力，并清除上一帧的障碍停止标记。</summary>
+    public void EnableMove(){
+        canMove = true;
+        _hitObstacle = false;
+    }
+
     ///<summary>
-    ///开启角色可以移动的能力
+    ///旧接口名称，保留兼容已有时间轴脚本。
     ///</summary>
     public void EnableRotate(){
-        canMove = true;
+        EnableMove();
     }
 }   
 

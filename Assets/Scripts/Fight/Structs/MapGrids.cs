@@ -20,16 +20,30 @@ public struct GridInfo{
     ///</summary>
     public bool flyCanPass;
 
-    public GridInfo(string prefabPath, bool characterCanPass = true, bool bulletCanPass = true){
+    /// <summary>钻地是否可以通过，默认可通行，关卡可显式关闭。</summary>
+    public bool undergroundCanPass;
+
+    /// <summary>爬墙是否可以通过，默认可通行，关卡可显式关闭。</summary>
+    public bool wallClimbingCanPass;
+
+    public GridInfo(
+        string prefabPath,
+        bool characterCanPass = true,
+        bool bulletCanPass = true,
+        bool undergroundCanPass = true,
+        bool wallClimbingCanPass = true
+    ){
         this.prefabPath = prefabPath;
         this.groundCanPass = characterCanPass;
         this.flyCanPass = bulletCanPass;
+        this.undergroundCanPass = undergroundCanPass;
+        this.wallClimbingCanPass = wallClimbingCanPass;
     }
 
     ///<summary>
     ///场景外的格子，无意义的单元格
     ///</summary>
-    public static GridInfo VoidGrid{get;} = new GridInfo("", false, false);
+    public static GridInfo VoidGrid{get;} = new GridInfo("", false, false, false, false);
 }
 
 //整个地图的信息
@@ -123,6 +137,8 @@ public class MapInfo{
         switch (moveType){
             case MoveType.ground: return grid[gridX, gridY].groundCanPass;
             case MoveType.fly: return grid[gridX, gridY].flyCanPass;
+            case MoveType.underground: return grid[gridX, gridY].undergroundCanPass;
+            case MoveType.wallClimbing: return grid[gridX, gridY].wallClimbingCanPass;
         }
         return false;
     }

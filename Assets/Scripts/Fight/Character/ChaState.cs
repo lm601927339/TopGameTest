@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +7,80 @@ using UnityEngine;
 ///瑙掕壊鐨勨€滅姸鎬佲€濓紝鐢ㄦ潵绠＄悊褰撳墠搴旇鎬庝箞绉诲姩銆佸簲璇ユ€庝箞鏃嬭浆銆佸簲璇ユ€庝箞鎾斁鍔ㄧ敾鐨勩€?
 ///鏄竴涓鑹茬殑鎬荤殑鈥滆皟鎺т腑蹇冣€濄€?
 ///</summary>
+/// <summary>角色能力状态类型，阶段一先统一状态语义，后续技能只负责申请状态。</summary>
+public enum ChaAbilityStateType{
+    Invisible = 0,
+    Invincible = 1,
+    Underground = 2,
+    Floating = 3,
+    Flying = 3,
+    Airborne = 3,
+    WallClimbing = 4,
+    Stunned = 5,
+    Disguised = 6,
+    MindControlled = 7,
+    Controlled = 7,
+    Poisoned = 8,
+    Radiated = 9,
+    Burning = 10,
+    Frozen = 11
+}
+
+/// <summary>一个带来源、优先级和时长的角色能力状态。</summary>
+[System.Serializable]
+public class ChaAbilityState{
+    public ChaAbilityStateType stateType;
+    public string sourceId;
+    public int priority;
+    /// <summary>伪装状态使用的阵营覆盖值，未设置时保持原阵营。</summary>
+    public int sideOverride;
+    /// <summary>小于零表示永久状态，否则每个固定帧递减。</summary>
+    public float duration;
+
+    public ChaAbilityState(ChaAbilityStateType stateType, string sourceId, float duration, int priority, int sideOverride = int.MinValue){
+        this.stateType = stateType;
+        this.sourceId = sourceId;
+        this.duration = duration;
+        this.priority = priority;
+        this.sideOverride = sideOverride;
+    }
+
+    public bool IsExpired{
+        get { return duration >= 0f && duration <= 0f; }
+    }
+}
+
+/// <summary>控制权来源，玩家、普通 AI、傀儡玩家和脚本强控互相独立。</summary>
+public enum ControlAuthorityKind{
+    Player = 0,
+    AI = 1,
+    Puppet = 2,
+    Script = 3
+}
+
+/// <summary>当前控制权记录，支持优先级、来源和自动释放。</summary>
+[System.Serializable]
+public class ControlAuthorityState{
+    public ControlAuthorityKind kind;
+    public string sourceId;
+    public int priority;
+    public float duration;
+    public int controllingSide;
+
+    public ControlAuthorityState(ControlAuthorityKind kind, string sourceId, int priority, float duration, int controllingSide){
+        this.kind = kind;
+        this.sourceId = sourceId;
+        this.priority = priority;
+        this.duration = duration;
+        this.controllingSide = controllingSide;
+    }
+
+    public bool IsExpired{
+        get { return duration >= 0f && duration <= 0f; }
+    }
+}
+
+
 public class ChaState:MonoBehaviour{
     ///<summary>
     //瑙掕壊鏈€缁堢殑鍙搷浣滄€х姸鎬?
@@ -20,7 +94,10 @@ public class ChaState:MonoBehaviour{
 
     public ChaControlState controlState{
         get{
-            return this._controlState + this.timelineControlState;
+            ChaControlState result = this._controlState + this.timelineControlState;
+            // 眩晕是状态系统的控制锁，不直接改写外部时间轴状态。
+            if (HasState(ChaAbilityStateType.Stunned) || HasState(ChaAbilityStateType.Frozen)) result += ChaControlState.stun;
+            return result;
         }
     }
 
@@ -76,7 +153,19 @@ public class ChaState:MonoBehaviour{
     /// <summary>
     /// 鏉ヨ嚜寮哄埗鍙戠敓鐨勪綅绉讳俊鎭紝閫氬父鏄妧鑳芥晥鏋滅瓑瀵艰嚧鐨勶紝姣斿缈绘粴銆佽鎺ㄥ紑绛?
     /// </summary>
-    private List<MovePreorder> forceMove = new List<MovePreorder>();
+    // 所有击退、吸附、龙卷风等外力统一进入结算器。
+    private List<MotionInfluence> forceMove = new List<MotionInfluence>();
+
+    /// <summary>角色当前能力状态列表，状态效果不再散落在各个技能脚本中。</summary>
+    private List<ChaAbilityState> abilityStates = new List<ChaAbilityState>();
+    private MoveType baseMoveType = MoveType.ground;
+
+    private ControlAuthorityState controlAuthority;
+    private int originalSide = int.MinValue;
+    private static readonly List<ChaState> activeCharacters = new List<ChaState>();
+
+    /// <summary>当前场景中可供天气和目标服务查询的角色快照。</summary>
+    public static IReadOnlyList<ChaState> ActiveCharacters{ get { return activeCharacters; } }
 
     /// <summary>
     /// 鏀跺埌鐨勬潵鑷悇鏂圭殑鎾斁鍔ㄧ敾鐨勮姹?
@@ -181,16 +270,28 @@ public class ChaState:MonoBehaviour{
     private UnitBindManager bindPoints;
     private GameObject viewContainer;
 
+    private void OnEnable(){
+        if (!activeCharacters.Contains(this)) activeCharacters.Add(this);
+    }
+
+    private void OnDisable(){
+        activeCharacters.Remove(this);
+    }
+
     void Start() {
         rotateToOrder = transform.rotation.eulerAngles.z;
 
         synchronizedUnits();
+        if (originalSide == int.MinValue) originalSide = side;
+        if (unitMove) baseMoveType = unitMove.GetMoveType();
 
         AttrRecheck();
     }
 
     void FixedUpdate() {
         float timePassed = Time.fixedDeltaTime;
+        TickControlAuthority(timePassed);
+        TickAbilityStates(timePassed);
         if (dead == false){
             //濡傛灉瑙掕壊娌℃锛屽仛杩欎簺浜嬫儏锛?
 
@@ -243,25 +344,17 @@ public class ChaState:MonoBehaviour{
             
             ChaControlState curCS = this.controlState;// _controlState + timelineControlState;
 
-            //棣栧厛鏄悎骞剁Щ鍔ㄤ俊鎭紝鍙戦€佺粰UnitMove
-            bool tryRun = curCS.canMove == true && moveOrder != Vector3.zero;
-            float tryMoveDegree = Mathf.Atan2(moveOrder.x, moveOrder.y) * 180 / Mathf.PI;
+            // 先合并自主移动和阶段二外力，再交给 UnitMove 执行。
+            Vector3 autonomousMove = curCS.canMove ? moveOrder : Vector3.zero;
+            Vector3 resolvedMove = MotionResolver.Resolve(
+                autonomousMove, forceMove, timePassed, curCS.canMove
+            );
+            bool tryRun = resolvedMove != Vector3.zero;
+            float tryMoveDegree = Mathf.Atan2(resolvedMove.x, resolvedMove.y) * 180 / Mathf.PI;
             if (tryMoveDegree > 180) tryMoveDegree -= 360;
-            if (unitMove){
-                if (curCS.canMove == false) moveOrder = Vector3.zero;
-                int fmIndex = 0;
-                while (fmIndex < forceMove.Count){
-                    moveOrder += forceMove[fmIndex].VeloInTime(timePassed);
-                    if (forceMove[fmIndex].duration <= 0){
-                        forceMove.RemoveAt(fmIndex);
-                    }else{
-                        fmIndex++;
-                    }
-                }
-                unitMove.MoveBy(moveOrder);
-                moveOrder = Vector3.zero;
-            }
-            
+            if (unitMove) unitMove.MoveBy(resolvedMove);
+            moveOrder = Vector3.zero;
+
             _wishToFaceDegree = rotateToOrder;
             if (wishToMove == false) _wishToMoveDegree = _wishToFaceDegree;
             //鐒跺悗鏄棆杞俊鎭?
@@ -321,8 +414,32 @@ public class ChaState:MonoBehaviour{
     ///寮哄埗绉诲姩
     ///<param name="moveInfo">绉诲姩淇℃伅</param>
     ///</summary>
+    public void AddForceMove(MotionInfluence move){
+        if (move != null) this.forceMove.Add(move);
+    }
+
+    /// <summary>同一来源的环境力只保留一条，避免天气每帧堆积影响对象。</summary>
+    public void AddOrRefreshMotionInfluence(MotionInfluence move){
+        if (move == null) return;
+        for (int i = 0; i < forceMove.Count; i++){
+            MotionInfluence current = forceMove[i];
+            if (current != null && current.sourceId == move.sourceId && current.priority == move.priority && current.blendMode == move.blendMode){
+                current.velocity = move.velocity;
+                current.duration = Mathf.Max(current.duration, move.duration);
+                current.ignoreControlState = move.ignoreControlState;
+                return;
+            }
+        }
+        forceMove.Add(move);
+    }
+
+    /// <summary>旧版击退接口适配到新的运动影响系统。</summary>
     public void AddForceMove(MovePreorder move){
-        this.forceMove.Add(move);
+        if (move == null) return;
+        this.forceMove.Add(new MotionInfluence(
+            "legacy", move.velocity, move.duration, 0,
+            MotionInfluenceBlendMode.Additive, true
+        ));
     }
 
     ///<summary>
@@ -421,11 +538,7 @@ public class ChaState:MonoBehaviour{
     ///<return>濡傛灉鏄痶rue浠ｈ〃瑙掕壊鍙兘浼氳杩欐浼ゅ鎵€鏉€</return>
     ///</summary>
     public bool CanBeKilledByDamageInfo(DamageInfo damageInfo){
-          if (this.debugInvincible && damageInfo != null && damageInfo.isHeal() == false)
-          {
-              return false;
-          }
-
+          if (IsDamageBlocked(damageInfo)) return false;
           return CharacterStatsUtility.CanBeKilledByDamageInfo(this.resource, this.immuneTime, damageInfo);
     }
 
@@ -593,20 +706,173 @@ public class ChaState:MonoBehaviour{
         return GetSkillById(skillId) != null;
     }
 
-    public bool IsInvincible
-    {
-        get
-        {
-            return debugInvincible;
+    public bool IsInvincible{
+        get{
+            return debugInvincible || HasState(ChaAbilityStateType.Invincible) || _immuneTime > 0f;
         }
     }
+
+    // 目标筛选系统会通过反射读取这两个小驼峰属性，保留兼容命名。
+    public bool isInvincible{ get { return IsInvincible; } }
+    public bool isInvisible{ get { return HasState(ChaAbilityStateType.Invisible); } }
+    public bool IsInvisible{ get { return isInvisible; } }
+    public bool IsFrozen{ get { return HasState(ChaAbilityStateType.Frozen); } }
+    public bool IsPoisoned{ get { return HasState(ChaAbilityStateType.Poisoned); } }
+    public bool IsRadiated{ get { return HasState(ChaAbilityStateType.Radiated); } }
+    public bool IsBurning{ get { return HasState(ChaAbilityStateType.Burning); } }
+
 
     public bool IsMoveControlEnabled
     {
         get
         {
-            return _controlState.canMove;
+            return controlState.canMove;
         }
+    }
+
+    /// <summary>按来源移除阶段二外力，环境效果结束时调用。</summary>
+    public int RemoveForceMove(string sourceId){
+        int removed = 0;
+        for (int i = forceMove.Count - 1; i >= 0; i--){
+            MotionInfluence influence = forceMove[i];
+            if (influence != null && influence.sourceId == sourceId){
+                forceMove.RemoveAt(i);
+                removed++;
+            }
+        }
+        return removed;
+    }
+
+    /// <summary>原始阵营，不随傀儡控制改变。</summary>
+    public int OriginalSide{ get { return originalSide == int.MinValue ? side : originalSide; } }
+
+    /// <summary>有效阵营，目标关系只读取这个值。</summary>
+    public int EffectiveSide{
+        get{
+            if (controlAuthority != null && !controlAuthority.IsExpired && controlAuthority.controllingSide != int.MinValue) return controlAuthority.controllingSide;
+            int disguisedSide = int.MinValue;
+            int disguisedPriority = int.MinValue;
+            for (int i = 0; i < abilityStates.Count; i++){
+                ChaAbilityState state = abilityStates[i];
+                if (state != null && !state.IsExpired && state.stateType == ChaAbilityStateType.Disguised &&
+                    state.sideOverride != int.MinValue && state.priority >= disguisedPriority){
+                    disguisedSide = state.sideOverride;
+                    disguisedPriority = state.priority;
+                }
+            }
+            if (disguisedSide != int.MinValue) return disguisedSide;
+            return side;
+        }
+    }
+
+    /// <summary>当前是否被外部控制；被控时普通 AI 不再提交移动和攻击意图。</summary>
+    public bool IsControlled{ get { return controlAuthority != null && !controlAuthority.IsExpired; } }
+    public ControlAuthorityState CurrentControlAuthority{ get { return controlAuthority; } }
+
+    /// <summary>申请控制权，低优先级控制不能覆盖高优先级控制。</summary>
+    public bool AcquireControl(ControlAuthorityKind kind, string sourceId, int priority, float duration = -1f, int controllingSide = int.MinValue){
+        if (string.IsNullOrEmpty(sourceId)) sourceId = "control";
+        if (controlAuthority != null && !controlAuthority.IsExpired && priority < controlAuthority.priority) return false;
+        controlAuthority = new ControlAuthorityState(kind, sourceId, priority, duration, controllingSide);
+        AddState(ChaAbilityStateType.MindControlled, sourceId, duration, priority);
+        return true;
+    }
+
+    /// <summary>释放指定来源的控制权并清理对应状态。</summary>
+    public bool ReleaseControl(string sourceId){
+        if (controlAuthority == null || (sourceId != null && controlAuthority.sourceId != sourceId)) return false;
+        string releasedSource = controlAuthority.sourceId;
+        controlAuthority = null;
+        RemoveState(ChaAbilityStateType.MindControlled, releasedSource);
+        return true;
+    }
+
+    private void TickControlAuthority(float deltaTime){
+        if (controlAuthority == null) return;
+        if (controlAuthority.duration >= 0f) controlAuthority.duration -= Mathf.Max(0f, deltaTime);
+        if (controlAuthority.IsExpired) ReleaseControl(controlAuthority.sourceId);
+    }
+
+
+    /// <summary>查询尚未过期的能力状态。</summary>
+    public bool HasState(ChaAbilityStateType stateType, string sourceId = null){
+        for (int i = 0; i < abilityStates.Count; i++){
+            ChaAbilityState state = abilityStates[i];
+            if (state != null && !state.IsExpired && state.stateType == stateType &&
+                (sourceId == null || state.sourceId == sourceId)) return true;
+        }
+        return false;
+    }
+
+    /// <summary>新增或刷新一个带来源的能力状态，duration 小于零表示永久。</summary>
+    public ChaAbilityState AddState(ChaAbilityStateType stateType, string sourceId = "manual", float duration = -1f, int priority = 0, int sideOverride = int.MinValue){
+        for (int i = 0; i < abilityStates.Count; i++){
+            ChaAbilityState state = abilityStates[i];
+            if (state != null && state.stateType == stateType && state.sourceId == sourceId){
+                state.duration = duration;
+                state.priority = priority;
+                state.sideOverride = sideOverride;
+                RefreshMovementState();
+                return state;
+            }
+        }
+        ChaAbilityState added = new ChaAbilityState(stateType, sourceId, duration, priority, sideOverride);
+        abilityStates.Add(added);
+        RefreshMovementState();
+        return added;
+    }
+
+    /// <summary>移除指定来源的状态；sourceId 为空时移除该类型全部状态。</summary>
+    public int RemoveState(ChaAbilityStateType stateType, string sourceId = null){
+        int removed = 0;
+        for (int i = abilityStates.Count - 1; i >= 0; i--){
+            ChaAbilityState state = abilityStates[i];
+            if (state != null && state.stateType == stateType && (sourceId == null || state.sourceId == sourceId)){
+                abilityStates.RemoveAt(i);
+                removed++;
+            }
+        }
+        if (removed > 0) RefreshMovementState();
+        return removed;
+    }
+
+    /// <summary>设置没有能力状态覆盖时使用的基础移动模式。</summary>
+    public void SetMoveType(MoveType moveType){
+        baseMoveType = moveType;
+        RefreshMovementState();
+    }
+
+    private void TickAbilityStates(float deltaTime){
+        bool movementChanged = false;
+        for (int i = abilityStates.Count - 1; i >= 0; i--){
+            ChaAbilityState state = abilityStates[i];
+            if (state == null){ abilityStates.RemoveAt(i); continue; }
+            if (state.duration >= 0f) state.duration -= Mathf.Max(0f, deltaTime);
+            if (state.IsExpired){
+                movementChanged = movementChanged || IsMovementState(state.stateType);
+                abilityStates.RemoveAt(i);
+            }
+        }
+        if (movementChanged) RefreshMovementState();
+    }
+
+    private bool IsMovementState(ChaAbilityStateType stateType){
+        return stateType == ChaAbilityStateType.Underground || stateType == ChaAbilityStateType.Floating || stateType == ChaAbilityStateType.WallClimbing;
+    }
+
+    private void RefreshMovementState(){
+        if (!unitMove) return;
+        MoveType selected = baseMoveType;
+        int selectedPriority = int.MinValue;
+        for (int i = 0; i < abilityStates.Count; i++){
+            ChaAbilityState state = abilityStates[i];
+            if (state == null || state.IsExpired || !IsMovementState(state.stateType) || state.priority < selectedPriority) continue;
+            selectedPriority = state.priority;
+            if (state.stateType == ChaAbilityStateType.Underground) selected = MoveType.underground;
+            else if (state.stateType == ChaAbilityStateType.WallClimbing) selected = MoveType.wallClimbing;
+            else selected = MoveType.fly;
+        }
+        unitMove.SetMoveType(selected);
     }
 
     public void SetDebugInvincible(bool enabled)
@@ -650,7 +916,7 @@ public class ChaState:MonoBehaviour{
 
     public bool IsDamageBlocked(DamageInfo damageInfo)
     {
-        return this.debugInvincible && damageInfo != null && damageInfo.isHeal() == false;
+        return IsInvincible && damageInfo != null && damageInfo.isHeal() == false;
     }
 
     private void RemoveLearnedSkillBuffs(string skillId)
