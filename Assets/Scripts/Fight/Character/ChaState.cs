@@ -23,7 +23,9 @@ public enum ChaAbilityStateType{
     Poisoned = 8,
     Radiated = 9,
     Burning = 10,
-    Frozen = 11
+    Frozen = 11,
+    // 首批变羊只实现统一控制锁，不直接替换角色模型；视觉替换留给后续角色视图阶段。
+    Polymorphed = 12
 }
 
 /// <summary>一个带来源、优先级和时长的角色能力状态。</summary>
@@ -96,7 +98,7 @@ public class ChaState:MonoBehaviour{
         get{
             ChaControlState result = this._controlState + this.timelineControlState;
             // 眩晕是状态系统的控制锁，不直接改写外部时间轴状态。
-            if (HasState(ChaAbilityStateType.Stunned) || HasState(ChaAbilityStateType.Frozen)) result += ChaControlState.stun;
+            if (HasState(ChaAbilityStateType.Stunned) || HasState(ChaAbilityStateType.Frozen) || HasState(ChaAbilityStateType.Polymorphed)) result += ChaControlState.stun;
             return result;
         }
     }
@@ -806,20 +808,37 @@ public class ChaState:MonoBehaviour{
 
     /// <summary>新增或刷新一个带来源的能力状态，duration 小于零表示永久。</summary>
     public ChaAbilityState AddState(ChaAbilityStateType stateType, string sourceId = "manual", float duration = -1f, int priority = 0, int sideOverride = int.MinValue){
+        float resolvedDuration = duration;
+        AbilityStateResistanceProfile resistanceProfile = GetComponent<AbilityStateResistanceProfile>();
+        if (resistanceProfile != null && !resistanceProfile.TryAdjustDuration(stateType, ref resolvedDuration)) return null;
         for (int i = 0; i < abilityStates.Count; i++){
             ChaAbilityState state = abilityStates[i];
             if (state != null && state.stateType == stateType && state.sourceId == sourceId){
-                state.duration = duration;
+                state.duration = resolvedDuration;
                 state.priority = priority;
                 state.sideOverride = sideOverride;
                 RefreshMovementState();
+                if (stateType == ChaAbilityStateType.Polymorphed) AbilityVisualStateBinder.EnsureFor(this);
                 return state;
             }
         }
-        ChaAbilityState added = new ChaAbilityState(stateType, sourceId, duration, priority, sideOverride);
+        ChaAbilityState added = new ChaAbilityState(stateType, sourceId, resolvedDuration, priority, sideOverride);
         abilityStates.Add(added);
         RefreshMovementState();
+        if (stateType == ChaAbilityStateType.Polymorphed) AbilityVisualStateBinder.EnsureFor(this);
         return added;
+    }
+
+    /// <summary>返回指定状态剩余的最长时间；负数代表永久状态，零代表当前不存在。</summary>
+    public float GetStateRemaining(ChaAbilityStateType stateType){
+        float remaining = 0f;
+        for (int i = 0; i < abilityStates.Count; i++){
+            ChaAbilityState state = abilityStates[i];
+            if (state == null || state.IsExpired || state.stateType != stateType) continue;
+            if (state.duration < 0f) return -1f;
+            remaining = Mathf.Max(remaining, state.duration);
+        }
+        return remaining;
     }
 
     /// <summary>移除指定来源的状态；sourceId 为空时移除该类型全部状态。</summary>

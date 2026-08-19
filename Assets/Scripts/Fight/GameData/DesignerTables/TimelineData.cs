@@ -73,6 +73,24 @@ namespace DesingerTables
                 new TimelineNode(0.50f, "SetCasterControlState", new object[]{true, true, true})
             }, 0.50f, TimelineGoTo.Null)},
 
+            // 隐身只申请状态，渲染器隐藏和 AI 失去目标由统一状态系统完成。
+            { "skill_shadowVeil", new TimelineModel("skill_shadowVeil", new TimelineNode[]{
+                new TimelineNode(0.05f, "ApplyAbilityState", new object[]{ChaAbilityStateType.Invisible, "shadowVeil", 4.0f, 30})
+            }, 0.10f, TimelineGoTo.Null)},
+
+            // 变羊的首批实现为 2.5 秒操作锁；模型与特效替换将在角色视图扩展阶段接入。
+            { "skill_spellPolymorph", new TimelineModel("skill_spellPolymorph", new TimelineNode[]{
+                new TimelineNode(0.05f, "ApplyAbilityStateToNearestEnemy", new object[]{6.0f, ChaAbilityStateType.Polymorphed, "spellPolymorph", 2.5f, 30})
+            }, 0.10f, TimelineGoTo.Null)},
+
+            { "skill_spellLightning", new TimelineModel("skill_spellLightning", new TimelineNode[]{
+                new TimelineNode(0.05f, "SummonAbilityLightning", new object[]{7.0f, 26, 1.0f, "spellLightning"})
+            }, 0.10f, TimelineGoTo.Null)},
+
+            { "skill_spellFreeze", new TimelineModel("skill_spellFreeze", new TimelineNode[]{
+                new TimelineNode(0.05f, "ApplyAbilityStateToNearestEnemy", new object[]{6.0f, ChaAbilityStateType.Frozen, "spellFreeze", 2.2f, 30})
+            }, 0.10f, TimelineGoTo.Null)},
+
             { "skill_stunShot", new TimelineModel("skill_stunShot", new TimelineNode[]{
                 new TimelineNode(0.00f, "SetCasterControlState", new object[]{true, true, false}),
                 new TimelineNode(0.00f, "CasterPlayAnim", new object[]{"Fire", false}),

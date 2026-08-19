@@ -18,6 +18,7 @@ namespace DesignerScripts
         public const string CasterAddAmmo = "CasterAddAmmo";
         public const string SummonCharacter = "SummonCharacter";
         public const string ApplyAbilityState = "ApplyAbilityState";
+        public const string ApplyAbilityStateToNearestEnemy = "ApplyAbilityStateToNearestEnemy";
         public const string RemoveAbilityState = "RemoveAbilityState";
         public const string ControlNearestMonster = "ControlNearestMonster";
         public const string SpawnAbilityClone = "SpawnAbilityClone";

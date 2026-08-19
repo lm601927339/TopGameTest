@@ -22,6 +22,7 @@ public static class GameRuntime
             if (config == null)
             {
                 config = CreateDefaultConfigAsset();
+                HeroSelectionService.ApplySavedSelection(config);
             }
             return config;
         }
@@ -32,6 +33,7 @@ public static class GameRuntime
         gameManager = bootstrap;
         config = designConfig != null ? designConfig : CreateDefaultConfigAsset();
         EnsureCatalogAsset(config);
+        HeroSelectionService.ApplySavedSelection(config);
         sceneObjectCache.Clear();
         prefabCache.Clear();
         rootObject = null;

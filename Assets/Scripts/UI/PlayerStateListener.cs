@@ -12,9 +12,12 @@ public class PlayerStateListener : MonoBehaviour{
 
     Text text;
     private ChaState playerState;
+    private AbilityStatusHud statusHud;
 
     private void Start() {
         text = this.gameObject.GetComponent<Text>();
+        statusHud = this.gameObject.GetComponent<AbilityStatusHud>();
+        if (statusHud == null) statusHud = this.gameObject.AddComponent<AbilityStatusHud>();
     }
     
     //因为UI必然是渲染的，所以走Update
@@ -26,5 +29,6 @@ public class PlayerStateListener : MonoBehaviour{
         int maxHp = playerState.property.hp;
         string c = (curHp * 1.000f / (maxHp * 1.000f)) > 0.300f ? "green" : "red";
         text.text = "<color=" + c + ">" + curHp.ToString() + " / " + maxHp.ToString() + "</color>";
+        if (statusHud != null) statusHud.Bind(playerState);
     }
 }

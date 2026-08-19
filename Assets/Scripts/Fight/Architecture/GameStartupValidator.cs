@@ -45,6 +45,9 @@ public static class GameStartupValidator
             warnings.Add("designCatalog is missing. Runtime will fall back to the legacy mirror until a formal catalog asset is assigned.");
         }
 
+        // 三英雄及后续扩展英雄均在进入战斗前校验，避免按键或技能 ID 配错后只在运行中静默失效。
+        HeroRuntimeContractVerifier.AppendWarnings(config, warnings);
+
         if (config.startingSkills != null)
         {
             for (int i = 0; i < config.startingSkills.Length; i++)

@@ -126,8 +126,13 @@ namespace DesignerScripts
             ChaState cs = target.GetComponent<ChaState>();
             if (!cs) return;
             Debug.Log("[BulletScript] BulletPoisoningOnHit target=" + target.name);
+
+            // 先结算目标的中毒抗性，再将同一实际时长写入 DOT Buff。
+            // 若目标完全免疫中毒，则不应保留任何中毒伤害。
+            float poisonDuration;
+            if (!AbilityEffectService.TryApplyPoisoned(cs, "bullet-poison", 5f, out poisonDuration)) return;
             cs.AddBuff(new AddBuffInfo(
-                    DesingerTables.BuffData.data["BulletPoisoningOnHit"], bullet, target, 1, 5, true, false
+                    DesingerTables.BuffData.data["BulletPoisoningOnHit"], bullet, target, 1, poisonDuration, true, false
                 ));
         }
 
@@ -141,8 +146,12 @@ namespace DesignerScripts
             ChaState cs = target.GetComponent<ChaState>();
             if (!cs) return;
             Debug.Log("[BulletScript] BulletPoisonSlowOnHit target=" + target.name);
+
+            // 毒缓同样以状态抗性结算后的时长驱动，确保减速、DOT 和 HUD 同时结束。
+            float poisonDuration;
+            if (!AbilityEffectService.TryApplyPoisoned(cs, "bullet-poison-slow", 5f, out poisonDuration)) return;
             cs.AddBuff(new AddBuffInfo(
-                    DesingerTables.BuffData.data["SkillPoisonSlowOnHit"], bullet, target, 1, 5, true, false
+                    DesingerTables.BuffData.data["SkillPoisonSlowOnHit"], bullet, target, 1, poisonDuration, true, false
                 ));
         }
 

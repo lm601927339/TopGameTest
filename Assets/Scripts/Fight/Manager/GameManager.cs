@@ -39,13 +39,15 @@ public class GameManager : MonoBehaviour
         CreateMapGameObjects();
 
         Vector3 playerPos = SceneVariants.map.GetRandomPosForCharacter(new RectInt(0, 0, SceneVariants.map.MapWidth(), SceneVariants.map.MapHeight()));
+        HeroDefinition selectedHero;
+        bool useHeroDefinition = Config.TryGetSelectedHero(out selectedHero);
         mainCharacter = CreateCharacter(
-            Config.playerPrefabPath,
+            useHeroDefinition ? selectedHero.prefabPath : Config.playerPrefabPath,
             Config.playerSide,
             new Vector3(),
-            Config.BuildPlayerProperty(),
+            useHeroDefinition ? selectedHero.baseProperty : Config.BuildPlayerProperty(),
             0,
-            Config.playerViewAnimInfo
+            useHeroDefinition ? selectedHero.viewAnimInfo : Config.playerViewAnimInfo
         );
 
         if (mainCharacter)
@@ -53,6 +55,18 @@ public class GameManager : MonoBehaviour
             mainCharacter.AddComponent<PlayerController>().mainCamera = GameRuntime.MainCamera;
             mainCharacter.transform.position = playerPos;
             GameRuntime.SetMainActor(mainCharacter);
+
+            // 英雄模板负责属性、技能和状态视觉绑定；旧配置无法解析时仍走原有技能列表。
+            if (useHeroDefinition)
+            {
+                HeroRuntime heroRuntime = mainCharacter.GetComponent<HeroRuntime>();
+                if (heroRuntime == null) heroRuntime = mainCharacter.AddComponent<HeroRuntime>();
+                if (!heroRuntime.Configure(selectedHero))
+                {
+                    Debug.LogWarning("[GameManager] Hero configuration failed. Falling back to legacy starting skills.");
+                    useHeroDefinition = false;
+                }
+            }
         }
 
         GameObject mainCameraObj = GameRuntime.FindSceneObject(Config.mainCameraObjectName);
@@ -76,17 +90,24 @@ public class GameManager : MonoBehaviour
         }
 
         ChaState mcs = mainCharacter ? mainCharacter.GetComponent<ChaState>() : null;
-        if (mcs)
+        if (mcs && !useHeroDefinition)
         {
-            for (int i = 0; i < Config.startingSkills.Length; i++)
-            {
-                string skillId = Config.startingSkills[i];
-                SkillModel skillModel;
-                if (GameDatabase.TryGetSkill(skillId, out skillModel))
-                {
-                    mcs.LearnSkill(skillModel);
-                }
-            }
+            LearnLegacyStartingSkills(mcs);
+        }
+
+        // 选择面板只负责保存下一局英雄并重载当前场景，不在战斗中直接替换角色，避免残留技能和 Buff。
+        if (Config.showHeroSelectionPanel) HeroSelectionPanel.Ensure(Config);
+    }
+
+    /// <summary>保留旧场景的玩家技能装配，供没有选择有效英雄时安全回退。</summary>
+    private void LearnLegacyStartingSkills(ChaState state)
+    {
+        if (state == null || Config.startingSkills == null) return;
+        for (int i = 0; i < Config.startingSkills.Length; i++)
+        {
+            string skillId = Config.startingSkills[i];
+            SkillModel skillModel;
+            if (GameDatabase.TryGetSkill(skillId, out skillModel)) state.LearnSkill(skillModel);
         }
     }
 

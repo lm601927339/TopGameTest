@@ -50,6 +50,14 @@ public class GameDesignConfig : ScriptableObject
         "explosiveBarrel",
     };
 
+    [Header("Heroes")]
+    /// <summary>本局使用的英雄 ID；为空时默认使用暗影潜行者，保证旧场景无需补配置也能运行。</summary>
+    public string selectedHeroId = HeroCatalog.DefaultHeroId;
+    /// <summary>可在 Inspector 覆盖内置英雄同 ID 的定义，后续扩展新英雄也放在这里。</summary>
+    public HeroDefinition[] heroDefinitions = new HeroDefinition[0];
+    /// <summary>是否在战斗 Canvas 中显示三英雄切换面板；关闭后仍会读取已保存的英雄选择。</summary>
+    public bool showHeroSelectionPanel = true;
+
     [Header("Input")]
     public SkillBinding[] playerSkillBindings = new[]
     {
@@ -96,6 +104,12 @@ public class GameDesignConfig : ScriptableObject
             playerBodyRadius,
             playerHitRadius
         );
+    }
+
+    /// <summary>解析当前选择的英雄；失败时由调用方回退旧玩家配置，避免错误配置导致无法进入战斗。</summary>
+    public bool TryGetSelectedHero(out HeroDefinition hero)
+    {
+        return HeroCatalog.TryGet(this, selectedHeroId, out hero);
     }
 
     public ChaProperty BuildEnemyProperty(int spawnedCount)

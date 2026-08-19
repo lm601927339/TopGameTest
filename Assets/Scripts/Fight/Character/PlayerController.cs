@@ -88,6 +88,10 @@ public class PlayerController : MonoBehaviour
 
         bool btnHolding = false;
         SkillBinding[] bindings = GameRuntime.Config.playerSkillBindings;
+        // 无论当前是否在操控傀儡，按键都来自玩家本体所属英雄，不能被傀儡的技能表替换。
+        HeroRuntime heroRuntime = chaState != null ? chaState.GetComponent<HeroRuntime>() : null;
+        SkillBinding[] heroBindings;
+        if (heroRuntime != null && heroRuntime.TryGetSkillBindings(out heroBindings)) bindings = heroBindings;
         if (bindings == null || bindings.Length <= 0)
         {
             bindings = new SkillBinding[]

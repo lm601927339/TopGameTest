@@ -38,6 +38,26 @@ public static class AbilityEffectService{
         return ApplyState(target, ChaAbilityStateType.Invincible, sourceId, duration, priority);
     }
 
+    /// <summary>将中毒语义同步到能力状态；持续伤害和减速仍由原有 Buff 链路负责。</summary>
+    public static bool ApplyPoisoned(ChaState target, string sourceId, float duration, int priority = 20){
+        float resolvedDuration;
+        return TryApplyPoisoned(target, sourceId, duration, out resolvedDuration, priority);
+    }
+
+    /// <summary>
+    /// 施加中毒并返回抗性结算后的实际持续时间。
+    /// 毒性 DOT/减速 Buff 必须使用该返回值，避免状态图标结束后 Buff 仍继续生效。
+    /// </summary>
+    public static bool TryApplyPoisoned(ChaState target, string sourceId, float duration, out float resolvedDuration, int priority = 20){
+        resolvedDuration = 0f;
+        if (target == null || target.dead || string.IsNullOrEmpty(sourceId)) return false;
+
+        ChaAbilityState state = target.AddState(ChaAbilityStateType.Poisoned, sourceId, duration, priority);
+        if (state == null) return false;
+        resolvedDuration = state.duration;
+        return true;
+    }
+
     /// <summary>施加伪装状态；阵营关系读取伪装后的有效阵营。</summary>
     public static bool ApplyDisguise(ChaState target, string sourceId, int disguiseSide, float duration, int priority = 20){
         if (target == null || target.dead || disguiseSide == int.MinValue) return false;
@@ -85,8 +105,7 @@ public static class AbilityEffectService{
 
     private static bool ApplyState(ChaState target, ChaAbilityStateType stateType, string sourceId, float duration, int priority){
         if (target == null || target.dead || string.IsNullOrEmpty(sourceId)) return false;
-        target.AddState(stateType, sourceId, duration, priority);
-        return true;
+        return target.AddState(stateType, sourceId, duration, priority) != null;
     }
 }
 

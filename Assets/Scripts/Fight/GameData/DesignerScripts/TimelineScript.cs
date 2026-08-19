@@ -26,6 +26,7 @@ namespace DesignerScripts
             {TimelineEventIds.CasterAddAmmo, CasterAddAmmo},
             {TimelineEventIds.SummonCharacter, SummonCharacter},
             {TimelineEventIds.ApplyAbilityState, ApplyAbilityState},
+            {TimelineEventIds.ApplyAbilityStateToNearestEnemy, ApplyAbilityStateToNearestEnemy},
             {TimelineEventIds.RemoveAbilityState, RemoveAbilityState},
             {TimelineEventIds.ControlNearestMonster, ControlNearestMonster},
             {TimelineEventIds.SpawnAbilityClone, SpawnAbilityClone},
@@ -400,6 +401,20 @@ namespace DesignerScripts
             int priority = args.Length > 3 ? (int)args[3] : 20;
             int sideOverride = args.Length > 4 ? (int)args[4] : int.MinValue;
             state.AddState(stateType, sourceId, duration, priority, sideOverride);
+        }
+
+        /// <summary>向最近敌人施加状态；参数依次为半径、状态、来源、时长、优先级。</summary>
+        private static void ApplyAbilityStateToNearestEnemy(TimelineObj timelineObj, params object[] args){
+            if (!timelineObj.caster || args.Length < 2) return;
+            ChaState caster = timelineObj.caster.GetComponent<ChaState>();
+            if (caster == null) return;
+            float radius = args[0] is float ? (float)args[0] : float.PositiveInfinity;
+            ChaAbilityStateType stateType = args[1] is ChaAbilityStateType ? (ChaAbilityStateType)args[1] : (ChaAbilityStateType)(int)args[1];
+            string sourceId = args.Length > 2 ? (string)args[2] : "timeline-enemy-state";
+            float duration = args.Length > 3 ? (float)args[3] : -1f;
+            int priority = args.Length > 4 ? (int)args[4] : 20;
+            ChaState target = TargetService.FindNearestEnemy(caster, radius);
+            if (target != null) target.AddState(stateType, sourceId, duration, priority);
         }
 
         /// <summary>时间轴按来源清理能力状态，避免技能结束后残留隐身或伪装。</summary>
