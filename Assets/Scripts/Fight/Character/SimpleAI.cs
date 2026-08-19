@@ -9,6 +9,7 @@ public class SimpleAI:MonoBehaviour{
     private float toNextFire = 3.0f;
     private float toNextRotate = 2.0f;
     private float moveDegree;
+    private readonly EnemyAwarenessStateMachine awareness = new EnemyAwarenessStateMachine();
 
     private TimelineModel fire = new TimelineModel("", new TimelineNode[]{
         new TimelineNode(0.00f, "SetCasterControlState", new object[]{true, true, false}),
@@ -24,9 +25,14 @@ public class SimpleAI:MonoBehaviour{
     }, 0.50f, TimelineGoTo.Null);
 
     private ChaState chaState;
+    private EnemyAwarenessProfile awarenessProfile;
+
+    /// <summary>供战斗调试和后续行为树读取当前感知阶段。</summary>
+    public EnemyAwarenessState AwarenessState { get { return awareness.State; } }
 
     void Start() {
         chaState = this.gameObject.GetComponent<ChaState>();
+        awarenessProfile = this.gameObject.GetComponent<EnemyAwarenessProfile>();
         moveDegree = this.transform.rotation.eulerAngles.z;
     }
 
@@ -37,29 +43,51 @@ public class SimpleAI:MonoBehaviour{
         // 所有 AI 锁定都经由侦测配置和统一目标服务，不能再直接回退锁定主角，
         // 否则隐身英雄会在没有侦测能力的敌人面前失效。
         ChaState target = TargetService.FindNearestDetectedEnemy(chaState);
+        EnemyAwarenessSettings awarenessSettings = awarenessProfile != null
+            ? awarenessProfile.Settings
+            : EnemyAwarenessSettings.Default;
+        EnemyAwarenessDecision awarenessDecision = awareness.Advance(
+            target != null,
+            target != null ? target.transform.position : Vector3.zero,
+            transform.position,
+            timePassed,
+            awarenessSettings);
 
         float rotateTo = chaState.transform.rotation.eulerAngles.z;
+        Vector3 desiredMove = Vector3.zero;
         if (target != null)
         {
             Vector3 faceVec = target.transform.position - this.transform.position;
             rotateTo = Mathf.Atan2(faceVec.y, faceVec.x) * 180.00f / Mathf.PI;
+            desiredMove = faceVec;
         }
-
-        toNextRotate -= timePassed;
-        if (toNextRotate <= 0) {
-            moveDegree += Random.Range(-90.00f, 90.00f);
-            toNextRotate = Random.Range(1.60f, 3.20f);
+        else if (awarenessDecision.shouldMoveToInterest)
+        {
+            // 目标隐身或离开侦测范围时，只能前往其最后一次被确认的位置，
+            // 不保留目标引用，也不会继续追踪目标的实时坐标。
+            desiredMove = awarenessDecision.interestPosition - transform.position;
+            rotateTo = Mathf.Atan2(desiredMove.y, desiredMove.x) * 180.00f / Mathf.PI;
+        }
+        else
+        {
+            // 搜索抵达最后位置后原地转向观察；搜索结束再恢复旧的随机巡逻移动。
+            toNextRotate -= timePassed;
+            if (toNextRotate <= 0) {
+                moveDegree += Random.Range(-90.00f, 90.00f);
+                toNextRotate = Random.Range(1.60f, 3.20f);
+            }
+            rotateTo = moveDegree;
+            if (awarenessDecision.state == EnemyAwarenessState.Patrol)
+            {
+                float patrolRadians = moveDegree * Mathf.PI / 180;
+                desiredMove = new Vector3(Mathf.Cos(patrolRadians), Mathf.Sin(patrolRadians), 0);
+            }
         }
         chaState.OrderRotateTo(rotateTo);
-        float rRadius = moveDegree * Mathf.PI / 180;
         float mSpd = chaState.moveSpeed;
-        chaState.OrderMove(new Vector3(
-            Mathf.Cos(rRadius) * mSpd,
-            Mathf.Sin(rRadius) * mSpd,
-            0
-        ));
+        chaState.OrderMove(desiredMove.sqrMagnitude > 0.0001f ? desiredMove.normalized * mSpd : Vector3.zero);
 
-        // 阶段三先保留旧射击时间轴，后续 EnemyBrain 可替换这里的意图生成。
+        // 仍保留旧射击时间轴；后续 EnemyBrain 可替换这里的技能意图生成。
         //toNextFire -= timePassed;
         //if (toNextFire <= 0){
         //    SceneVariants.CreateTimeline(fire, this.gameObject, null);

@@ -121,6 +121,44 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void EnemyAwarenessSearchesLastSeenPositionBeforePatrolling()
+    {
+        EnemyAwarenessStateMachine awareness = new EnemyAwarenessStateMachine();
+        EnemyAwarenessSettings settings = new EnemyAwarenessSettings(2f, 0.25f);
+        Vector3 lastSeenPosition = new Vector3(4f, 2f, 0f);
+
+        EnemyAwarenessDecision chase = awareness.Advance(true, lastSeenPosition, Vector3.zero, 0f, settings);
+        EnemyAwarenessDecision search = awareness.Advance(false, Vector3.zero, Vector3.zero, 0.1f, settings);
+        EnemyAwarenessDecision arrivedSearch = awareness.Advance(false, Vector3.zero, lastSeenPosition, 0.1f, settings);
+        EnemyAwarenessDecision patrol = awareness.Advance(false, Vector3.zero, lastSeenPosition, 2f, settings);
+
+        Assert.That(chase.state, Is.EqualTo(EnemyAwarenessState.Chase));
+        Assert.That(search.state, Is.EqualTo(EnemyAwarenessState.Search));
+        Assert.That(search.shouldMoveToInterest, Is.True);
+        Assert.That(search.interestPosition, Is.EqualTo(lastSeenPosition));
+        Assert.That(arrivedSearch.shouldMoveToInterest, Is.False);
+        Assert.That(patrol.state, Is.EqualTo(EnemyAwarenessState.Patrol));
+        Assert.That(awareness.HasLastSeenPosition, Is.False);
+    }
+
+    [Test]
+    public void EnemyAwarenessRefreshesLastSeenPositionWhileTargetVisible()
+    {
+        EnemyAwarenessStateMachine awareness = new EnemyAwarenessStateMachine();
+        EnemyAwarenessSettings settings = new EnemyAwarenessSettings(2f, 0.25f);
+        Vector3 firstPosition = new Vector3(1f, 0f, 0f);
+        Vector3 latestPosition = new Vector3(6f, -3f, 0f);
+
+        awareness.Advance(true, firstPosition, Vector3.zero, 0f, settings);
+        awareness.Advance(true, latestPosition, Vector3.zero, 0.5f, settings);
+        EnemyAwarenessDecision search = awareness.Advance(false, Vector3.zero, Vector3.zero, 0.1f, settings);
+
+        Assert.That(search.state, Is.EqualTo(EnemyAwarenessState.Search));
+        Assert.That(search.interestPosition, Is.EqualTo(latestPosition));
+        Assert.That(awareness.LastSeenPosition, Is.EqualTo(latestPosition));
+    }
+
+    [Test]
     public void PoisonImmuneTargetReceivesNeitherStateNorBuff()
     {
         GameObject target = new GameObject("PoisonImmuneTarget");
