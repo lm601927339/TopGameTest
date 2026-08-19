@@ -10,6 +10,26 @@ using UnityEngine;
 public class HeroAbilityStateTests
 {
     [Test]
+    public void EnemyAttackTimingOnlyAdvancesForValidVisibleTarget()
+    {
+        EnemyAttackTiming timing = new EnemyAttackTiming(0.5f);
+
+        // 目标可见且在 8 米攻击距离内时，冷却正常推进并在 0.5 秒后允许攻击。
+        Assert.That(timing.Advance(true, 64f, 8f, true, 0.25f), Is.False);
+        Assert.That(timing.Advance(true, 64f, 8f, true, 0.25f), Is.True);
+
+        timing.Restart(2f);
+        // 隐身/遮挡后的不可见目标、超射程目标和被控制锁定的敌人都不能偷跑冷却。
+        Assert.That(timing.Advance(false, 1f, 8f, true, 10f), Is.False);
+        Assert.That(timing.RemainingCooldown, Is.EqualTo(2f).Within(0.001f));
+        Assert.That(timing.Advance(true, 81f, 8f, true, 10f), Is.False);
+        Assert.That(timing.RemainingCooldown, Is.EqualTo(2f).Within(0.001f));
+        Assert.That(timing.Advance(true, 1f, 8f, false, 10f), Is.False);
+        Assert.That(timing.RemainingCooldown, Is.EqualTo(2f).Within(0.001f));
+        Assert.That(timing.Advance(true, 1f, 8f, true, 2f), Is.True);
+    }
+
+    [Test]
     public void AvailableHeroesUseConfiguredOverrideAndIncludeNewHero()
     {
         GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
