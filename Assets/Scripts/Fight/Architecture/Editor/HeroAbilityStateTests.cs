@@ -159,6 +159,43 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void TargetVisibilityRejectsOutOfRangeAndOutsideViewAngle()
+    {
+        TargetDetectionSettings settings = new TargetDetectionSettings(5f, 90f, true);
+
+        TargetVisibilityResult outOfRange = TargetVisibilityService.Evaluate(
+            Vector3.zero, Vector3.right, new Vector3(6f, 0f, 0f), settings);
+        TargetVisibilityResult outsideViewAngle = TargetVisibilityService.Evaluate(
+            Vector3.zero, Vector3.right, new Vector3(0f, 4f, 0f), settings);
+
+        Assert.That(outOfRange, Is.EqualTo(TargetVisibilityResult.OutOfRange));
+        Assert.That(outsideViewAngle, Is.EqualTo(TargetVisibilityResult.OutsideViewAngle));
+    }
+
+    [Test]
+    public void TargetVisibilitySupportsOmnidirectionalVision()
+    {
+        TargetDetectionSettings settings = new TargetDetectionSettings(5f, 360f, true);
+
+        TargetVisibilityResult result = TargetVisibilityService.Evaluate(
+            Vector3.zero, Vector3.right, new Vector3(-4f, 0f, 0f), settings);
+
+        Assert.That(result, Is.EqualTo(TargetVisibilityResult.Visible));
+    }
+
+    [Test]
+    public void MapLineOfSightBlocksOpaqueGroundGrid()
+    {
+        GridInfo[,] grid = new GridInfo[5, 1];
+        for (int x = 0; x < grid.GetLength(0); x++) grid[x, 0] = new GridInfo("Ground", true, true);
+        grid[2, 0] = new GridInfo("Wall", false, true);
+        MapInfo map = new MapInfo(grid, Vector2.one);
+
+        Assert.That(map.HasGroundObstacleBetween(Vector3.zero, new Vector3(4f, 0f, 0f)), Is.True);
+        Assert.That(map.HasGroundObstacleBetween(Vector3.zero, new Vector3(1f, 0f, 0f)), Is.False);
+    }
+
+    [Test]
     public void PoisonImmuneTargetReceivesNeitherStateNorBuff()
     {
         GameObject target = new GameObject("PoisonImmuneTarget");

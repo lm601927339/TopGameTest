@@ -175,6 +175,27 @@ public class MapInfo{
         // return grid[gPos.x, gPos.y].groundCanPass;
     }
 
+    /// <summary>
+    /// 判断 XY 平面两点之间是否穿过地面不可通行格。视觉系统复用实际移动阻挡，
+    /// 不依赖墙体预制体是否具备 2D Collider；起点和终点格不参与遮挡，避免单位所在格误判。
+    /// </summary>
+    public bool HasGroundObstacleBetween(Vector3 from, Vector3 to){
+        Vector3 delta = to - from;
+        delta.z = 0f;
+        float distance = delta.magnitude;
+        if (distance <= 0.0001f) return false;
+
+        // 每四分之一最小格尺寸采样一次，覆盖斜向穿越的窄格阻挡。
+        float sampleStep = Mathf.Max(0.01f, Mathf.Min(gridSize.x, gridSize.y) * 0.25f);
+        int sampleCount = Mathf.Max(1, Mathf.CeilToInt(distance / sampleStep));
+        for (int i = 1; i < sampleCount; i++){
+            Vector3 point = Vector3.Lerp(from, to, i / (float)sampleCount);
+            Vector2Int gridPosition = GetGridPosByMeter(point.x, point.y);
+            if (!CanGridPasses(gridPosition.x, gridPosition.y, MoveType.ground, false)) return true;
+        }
+        return false;
+    }
+
         
     ///<summary>
     ///随机获得一个坐标，可以让角色站立在那里

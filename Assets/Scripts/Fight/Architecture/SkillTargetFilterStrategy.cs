@@ -535,7 +535,29 @@ public static class TargetService{
         TargetDetectionProfile detection = requester.GetComponent<TargetDetectionProfile>();
         bool allowInvisible = detection != null && detection.CanDetectInvisible;
         bool allowInvincible = detection != null && detection.CanTargetInvincible;
-        return FindNearestEnemy(requester, maxDistance, allowInvisible, allowInvincible);
+        TargetDetectionSettings settings = detection != null ? detection.Settings : TargetDetectionSettings.Default;
+        ChaState best = null;
+        float bestDistance = Mathf.Min(maxDistance, settings.sightRange);
+        bestDistance *= bestDistance;
+        IReadOnlyList<ChaState> candidates = ChaState.ActiveCharacters;
+        for (int i = 0; i < candidates.Count; i++){
+            ChaState candidate = candidates[i];
+            if (!IsTargetable(requester, candidate, allowInvisible, allowInvincible, false)) continue;
+            TargetVisibilityResult visibility = TargetVisibilityService.Evaluate(
+                requester.transform.position,
+                requester.transform.right,
+                candidate.transform.position,
+                settings,
+                maxDistance);
+            if (visibility != TargetVisibilityResult.Visible) continue;
+            Vector3 delta = candidate.transform.position - requester.transform.position;
+            float distance = delta.x * delta.x + delta.y * delta.y;
+            if (distance < bestDistance){
+                best = candidate;
+                bestDistance = distance;
+            }
+        }
+        return best;
     }
 
     /// <summary>判断目标是否可以被当前来源锁定。</summary>
