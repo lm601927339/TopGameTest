@@ -107,6 +107,11 @@ public class GameManager : MonoBehaviour
         if (Config.showHeroSelectionPanel) HeroSelectionPanel.Ensure(Config);
         // 结算面板同样由代码创建，当前阶段不要求制作正式预制体。
         resultPanel = BattleResultPanel.Ensure(Config);
+
+        // 旧场景可能没有手动放置刷怪器；自动补齐后仍使用同一套设计配置。
+        MobSpawnManager mobSpawner = FindObjectOfType<MobSpawnManager>();
+        if (mobSpawner == null) mobSpawner = gameObject.AddComponent<MobSpawnManager>();
+        mobSpawner.ConfigureForBattle(Config);
     }
 
     /// <summary>保留旧场景的玩家技能装配，供没有选择有效英雄时安全回退。</summary>

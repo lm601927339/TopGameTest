@@ -10,6 +10,27 @@ using UnityEngine;
 public class HeroAbilityStateTests
 {
     [Test]
+    public void WaveProgressionRequiresClearBeforeNextWaveAndCompletesOnFinalClear()
+    {
+        WaveProgressionStateMachine waves = new WaveProgressionStateMachine(2, 1f);
+        waves.Begin();
+        Assert.That(waves.State, Is.EqualTo(WaveProgressionState.Spawning));
+        Assert.That(waves.CurrentWave, Is.EqualTo(1));
+        Assert.That(waves.MarkSpawnQuotaReached(), Is.True);
+        Assert.That(waves.State, Is.EqualTo(WaveProgressionState.Clearing));
+        Assert.That(waves.MarkCleared(1), Is.False);
+        Assert.That(waves.State, Is.EqualTo(WaveProgressionState.Clearing));
+        Assert.That(waves.MarkCleared(0), Is.True);
+        Assert.That(waves.State, Is.EqualTo(WaveProgressionState.Intermission));
+        Assert.That(waves.Tick(0.5f), Is.False);
+        Assert.That(waves.Tick(0.5f), Is.True);
+        Assert.That(waves.CurrentWave, Is.EqualTo(2));
+        Assert.That(waves.MarkSpawnQuotaReached(), Is.True);
+        Assert.That(waves.MarkCleared(0), Is.True);
+        Assert.That(waves.State, Is.EqualTo(WaveProgressionState.Completed));
+    }
+
+    [Test]
     public void BattleRunStateMachineLocksFirstTerminalResult()
     {
         BattleRunStateMachine victoryRun = new BattleRunStateMachine();

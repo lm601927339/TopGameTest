@@ -86,6 +86,20 @@ public class GameDesignConfig : ScriptableObject
     public int maxMob = 0;
     public float spawnPeriod = 10.0f;
 
+    [Header("Wave Progression")]
+    /// <summary>开启后由 MobSpawnManager 按波次清场；关闭则保留旧的持续补怪模式。</summary>
+    public bool enableWaveProgression = true;
+    public int waveCount = 3;
+    public int enemiesPerWave = 3;
+    public float waveSpawnInterval = 0.6f;
+    public float waveIntermission = 1.5f;
+    public int eliteWave = 2;
+    public int bossWave = 3;
+    public float eliteHpMultiplier = 1.75f;
+    public float eliteAttackMultiplier = 1.35f;
+    public float bossHpMultiplier = 4.0f;
+    public float bossAttackMultiplier = 2.0f;
+
     [Header("Prefabs")]
     public string characterRootPrefab = "CharacterObj";
     public string bulletPrefabPath = "BulletObj";
