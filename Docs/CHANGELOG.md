@@ -1,5 +1,34 @@
 # 修改日志
 
+## 2026-08-20 - 项目 README 与当前功能说明
+
+### 新增
+
+- 新增根目录 `README.md`，记录项目定位、已实现功能、操作要领、配置入口、自动化/手工测试流程、未实现项和下一阶段建议。
+- README 同步说明当前敌人职业目录、波次结算、三英雄技能、天气规则和坐标平面风险，作为后续开发与验收入口。
+
+### 验证
+
+- README 中补充 Unity EditMode、Play Mode 和 `TestManager` 调试流程；本批次最终编译及 Git 检查结果以提交前验证为准。
+
+## 2026-08-20 - P1-04 统一敌人死亡事件
+
+### 新增
+
+- 新增 `CharacterDeathService` 和 `CharacterDeathEvent`，统一发布首次死亡的受害者、攻击者、玩家身份、阵营、波次标记、序号和时间。
+- `ChaState.Kill` 增加重复死亡保护；`DamageManager` 将实际攻击者传入致死链路，环境或脚本击杀允许攻击者为空。
+- `MobSpawnManager` 订阅统一事件维护本局和当前波次击杀计数；清场判定仍保留存活扫描，防止异常事件不完整导致误判。
+
+### 验证
+
+- 新增 EditMode 回归用例，覆盖直接 Kill 只发布一次、取消订阅后不再回调，以及 DamageManager 致死事件携带攻击者。
+- 待运行 Unity 2021.3.57f2 EditMode 与 `Assembly-CSharp-Editor` 编译检查。
+
+### 待手工验收
+
+- 战斗中击杀普通敌人、精英和 Boss，确认波次击杀计数各增加一次，重复受击/延迟 Buff 不会重复掉落或推进 Boss 进度。
+- 后续掉落、经验、Boss 血条和统计面板应订阅 `CharacterDeathService.CharacterDied`，不要再分别改写 `ChaState.Kill`。
+
 ## 2026-08-20 - P0-04 怪物职业配置化
 
 ### 新增

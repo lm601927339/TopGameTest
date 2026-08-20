@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DesignerScripts;
 using NUnit.Framework;
+using System.Reflection;
 using UnityEngine;
 
 /// <summary>
@@ -140,6 +141,91 @@ public class HeroAbilityStateTests
         Assert.That(fallback.id, Is.EqualTo("legacy_enemy"));
         Assert.That(fallback.prefabPath, Is.EqualTo("LegacyGhost"));
         Assert.That(fallback.viewAnimInfo, Is.EqualTo("LegacyAnim"));
+    }
+
+    [Test]
+    public void CharacterDeathPublishesOnceAndCanBeUnsubscribed()
+    {
+        CharacterDeathService.ResetForTests();
+        GameObject victim = new GameObject("DeathVictim");
+        GameObject attacker = new GameObject("DeathAttacker");
+        int callbackCount = 0;
+        CharacterDeathEvent received = null;
+        System.Action<CharacterDeathEvent> callback = death =>
+        {
+            callbackCount += 1;
+            received = death;
+        };
+        CharacterDeathService.CharacterDied += callback;
+        try
+        {
+            ChaState victimState = victim.AddComponent<ChaState>();
+            victimState.side = 2;
+            victimState.Kill(attacker);
+            victimState.Kill(attacker);
+
+            Assert.That(callbackCount, Is.EqualTo(1));
+            Assert.That(received, Is.Not.Null);
+            Assert.That(received.victim, Is.EqualTo(victimState));
+            Assert.That(received.attackerObject, Is.EqualTo(attacker));
+            Assert.That(received.attacker, Is.EqualTo(null));
+            Assert.That(received.isPlayer, Is.False);
+            Assert.That(received.sequence, Is.EqualTo(1));
+
+            CharacterDeathService.CharacterDied -= callback;
+            GameObject secondVictim = new GameObject("SecondDeathVictim");
+            try
+            {
+                secondVictim.AddComponent<ChaState>().Kill();
+                Assert.That(callbackCount, Is.EqualTo(1));
+            }
+            finally
+            {
+                Object.DestroyImmediate(secondVictim);
+            }
+        }
+        finally
+        {
+            CharacterDeathService.CharacterDied -= callback;
+            CharacterDeathService.ResetForTests();
+            Object.DestroyImmediate(attacker);
+            Object.DestroyImmediate(victim);
+        }
+    }
+
+    [Test]
+    public void DamageManagerDeathEventCarriesAttacker()
+    {
+        CharacterDeathService.ResetForTests();
+        GameObject victim = new GameObject("DamageVictim");
+        GameObject attacker = new GameObject("DamageAttacker");
+        GameObject managerObject = new GameObject("DamageManager");
+        CharacterDeathEvent received = null;
+        System.Action<CharacterDeathEvent> callback = death => received = death;
+        CharacterDeathService.CharacterDied += callback;
+        try
+        {
+            ChaState victimState = victim.AddComponent<ChaState>();
+            victimState.side = 2;
+            victimState.InitBaseProp(new ChaProperty(100, 10, 0, 0));
+            attacker.AddComponent<ChaState>();
+            DamageManager manager = managerObject.AddComponent<DamageManager>();
+            manager.DoDamage(attacker, victim, new Damage(20), 0f, 0f, new[] { DamageInfoTag.directDamage });
+            MethodInfo fixedUpdate = typeof(DamageManager).GetMethod("FixedUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+            fixedUpdate.Invoke(manager, null);
+
+            Assert.That(victimState.dead, Is.True);
+            Assert.That(received, Is.Not.Null);
+            Assert.That(received.attackerObject, Is.EqualTo(attacker));
+        }
+        finally
+        {
+            CharacterDeathService.CharacterDied -= callback;
+            CharacterDeathService.ResetForTests();
+            Object.DestroyImmediate(managerObject);
+            Object.DestroyImmediate(attacker);
+            Object.DestroyImmediate(victim);
+        }
     }
 
     [Test]

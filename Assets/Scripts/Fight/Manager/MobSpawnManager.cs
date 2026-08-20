@@ -59,6 +59,8 @@ public class MobSpawnManager : MonoBehaviour
     private int spawned;
     private int spawnedInWave;
     private int waveQuota;
+    private int defeatedInWave;
+    private int totalDefeated;
     private int mobSide = 2;
     private GameDesignConfig config;
     private WaveProgressionStateMachine progression;
@@ -77,6 +79,34 @@ public class MobSpawnManager : MonoBehaviour
     public bool IsCompleted
     {
         get { return progression != null && progression.IsCompleted; }
+    }
+
+    /// <summary>本局通过统一死亡事件统计的敌人击杀数，供 Boss UI、掉落和结算读取。</summary>
+    public int TotalDefeated { get { return totalDefeated; } }
+    public int CurrentWaveDefeated { get { return defeatedInWave; } }
+
+    private void OnEnable()
+    {
+        CharacterDeathService.CharacterDied += OnCharacterDied;
+    }
+
+    private void OnDisable()
+    {
+        CharacterDeathService.CharacterDied -= OnCharacterDied;
+    }
+
+    /// <summary>
+    /// 只记录带 WaveEnemyMarker 的敌人；清场仍由存活角色扫描确认，避免事件漏发时误判胜负。
+    /// 后续掉落、经验和 Boss 进度可复用同一事件而不修改刷怪器。
+    /// </summary>
+    private void OnCharacterDied(CharacterDeathEvent death)
+    {
+        if (death == null || !death.IsEnemy || death.waveMarker == null) return;
+        totalDefeated += 1;
+        if (progression != null && death.waveMarker.wave == progression.CurrentWave)
+        {
+            defeatedInWave += 1;
+        }
     }
 
     private void Awake()
@@ -181,6 +211,7 @@ public class MobSpawnManager : MonoBehaviour
     {
         timePassed = waveSpawnInterval;
         spawnedInWave = 0;
+        defeatedInWave = 0;
         waveQuota = GetWaveQuota(progression.CurrentWave);
         Debug.Log("[MobSpawnManager] Wave started: " + progression.CurrentWave + "/" + waveCount + " quota=" + waveQuota);
     }

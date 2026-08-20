@@ -471,8 +471,13 @@ public class ChaState:MonoBehaviour{
     ///<summary>
     ///鏉€姝昏繖涓鑹?
     ///</summary>
-    public void Kill(){
+    /// <summary>
+    /// 将角色标记为死亡并发布统一死亡事件。重复调用只保留第一次，避免掉落、计数和 Boss 进度重复触发。
+    /// </summary>
+    public void Kill(GameObject killer = null){
+        if (this.dead) return;
         this.dead = true;
+        CharacterDeathService.Publish(this, killer);
         if (unitAnim){
             unitAnim.Play("Dead");
         }
@@ -506,10 +511,11 @@ public class ChaState:MonoBehaviour{
     ///澧炲姞瑙掕壊鐨勮閲忕瓑璧勬簮锛岀洿鎺ユ敼鍙樻暟瀛楃殑锛屽睘浜庢渶鍚庝竴姝ユ搷浣滀簡
     ///<param name="value">瑕佹敼鍙樼殑閲忥紝璐熸暟涓哄噺灏?/param>
     ///</summary>
-    public void ModResource(ChaResource value){
+    /// <summary>修改角色资源；killer 只在本次修改导致死亡时传给统一死亡事件。</summary>
+    public void ModResource(ChaResource value, GameObject killer = null){
         this.resource = CharacterStatsUtility.ClampResource(this.resource + value, this._prop);
         if (this.resource.hp <= 0){
-            this.Kill();
+            this.Kill(killer);
         }
     }
 
