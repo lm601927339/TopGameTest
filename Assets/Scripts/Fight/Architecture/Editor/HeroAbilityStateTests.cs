@@ -10,6 +10,23 @@ using UnityEngine;
 public class HeroAbilityStateTests
 {
     [Test]
+    public void BattleRunStateMachineLocksFirstTerminalResult()
+    {
+        BattleRunStateMachine victoryRun = new BattleRunStateMachine();
+        Assert.That(victoryRun.TryVictory(true), Is.True);
+        Assert.That(victoryRun.State, Is.EqualTo(BattleRunState.Victory));
+        Assert.That(victoryRun.TryDefeat(), Is.False);
+        Assert.That(victoryRun.State, Is.EqualTo(BattleRunState.Victory));
+
+        BattleRunStateMachine defeatRun = new BattleRunStateMachine();
+        Assert.That(defeatRun.TryVictory(false), Is.False);
+        Assert.That(defeatRun.State, Is.EqualTo(BattleRunState.InProgress));
+        Assert.That(defeatRun.TryDefeat(), Is.True);
+        Assert.That(defeatRun.TryVictory(true), Is.False);
+        Assert.That(defeatRun.State, Is.EqualTo(BattleRunState.Defeat));
+    }
+
+    [Test]
     public void EnemyAttackTimingOnlyAdvancesForValidVisibleTarget()
     {
         EnemyAttackTiming timing = new EnemyAttackTiming(0.5f);

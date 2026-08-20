@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
 
     private GameObject mainCharacter;
     private GameObject root;
+    private readonly BattleRunStateMachine battleRun = new BattleRunStateMachine();
+    private BattleResultPanel resultPanel;
+
+    /// <summary>当前单局状态；波次系统和后续结算系统只能在 InProgress 阶段推进。</summary>
+    public BattleRunState BattleState { get { return battleRun.State; } }
+    public bool IsBattleInProgress { get { return battleRun.IsInProgress; } }
 
     private GameDesignConfig Config
     {
@@ -99,6 +105,8 @@ public class GameManager : MonoBehaviour
 
         // 选择面板只负责保存下一局英雄并重载当前场景，不在战斗中直接替换角色，避免残留技能和 Buff。
         if (Config.showHeroSelectionPanel) HeroSelectionPanel.Ensure(Config);
+        // 结算面板同样由代码创建，当前阶段不要求制作正式预制体。
+        resultPanel = BattleResultPanel.Ensure(Config);
     }
 
     /// <summary>保留旧场景的玩家技能装配，供没有选择有效英雄时安全回退。</summary>
@@ -115,6 +123,59 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (!battleRun.IsInProgress) return;
+
+        ChaState playerState = mainCharacter ? mainCharacter.GetComponent<ChaState>() : null;
+        if (playerState != null && playerState.dead)
+        {
+            ResolveDefeat();
+        }
+    }
+
+    /// <summary>
+    /// 由波次/Boss 系统在目标完成时调用。若玩家在同一帧已经死亡，结果以失败为准。
+    /// </summary>
+    public void ResolveVictory(string detail = "已完成本局目标")
+    {
+        ChaState playerState = mainCharacter ? mainCharacter.GetComponent<ChaState>() : null;
+        bool playerAlive = playerState != null && !playerState.dead;
+        if (!battleRun.TryVictory(playerAlive)) return;
+
+        StopBattleActors(false);
+        if (resultPanel == null) resultPanel = BattleResultPanel.Ensure(Config);
+        if (resultPanel != null) resultPanel.Show(BattleRunState.Victory, detail);
+        Debug.Log("[GameManager] Battle resolved: victory.");
+    }
+
+    /// <summary>玩家死亡后的唯一失败入口，重复的伤害/死亡检查不会重复弹出界面或清场。</summary>
+    private void ResolveDefeat()
+    {
+        if (!battleRun.TryDefeat()) return;
+
+        StopBattleActors(true);
+        if (resultPanel == null) resultPanel = BattleResultPanel.Ensure(Config);
+        if (resultPanel != null) resultPanel.Show(BattleRunState.Defeat, "英雄已倒下，重新集结后再战。");
+        Debug.Log("[GameManager] Battle resolved: defeat.");
+    }
+
+    /// <summary>
+    /// 停止当前局的控制与刷怪。失败会额外清理仍存活的敌人；胜利则保留最后死亡瞬间用于后续表现扩展。
+    /// </summary>
+    private void StopBattleActors(bool clearLivingEnemies)
+    {
+        PlayerController playerController = mainCharacter ? mainCharacter.GetComponent<PlayerController>() : null;
+        if (playerController != null) playerController.enabled = false;
+
+        MobSpawnManager mobSpawner = FindObjectOfType<MobSpawnManager>();
+        if (mobSpawner != null) mobSpawner.enabled = false;
+        if (clearLivingEnemies) GameRuntime.ClearCharactersBySide(Config.enemySide);
+
+        // 胜利后可能仍残留一颗已经发射的敌方子弹；给存活玩家无敌避免结算被覆盖。
+        ChaState playerState = mainCharacter ? mainCharacter.GetComponent<ChaState>() : null;
+        if (playerState != null && !playerState.dead && !clearLivingEnemies)
+        {
+            playerState.immuneTime = 99999f;
+        }
     }
 
     private GameObject CreateFromPrefab(string prefabPath, Vector3 position = new Vector3(), float rotation = 0.00f)
