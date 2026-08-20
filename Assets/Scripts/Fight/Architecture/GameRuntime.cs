@@ -235,19 +235,27 @@ public static class GameRuntime
     {
         GameDesignConfig cfg = Config;
         int spawnedCount = CountCharactersBySide(cfg.enemySide, true);
+        EnemyDefinition definition;
+        if (!EnemyCatalog.TrySelect(cfg, 1, WaveEnemyRank.Normal, UnityEngine.Random.Range(0, int.MaxValue), out definition))
+        {
+            definition = EnemyCatalog.CreateLegacyFallback(cfg);
+            Debug.LogWarning("[GameRuntime] No eligible enemy definition. Falling back to legacy enemy fields.");
+        }
         Debug.Log("[GameRuntime] SpawnEnemy side=" + cfg.enemySide + " count=" + spawnedCount + " position=" + position);
         GameObject enemy = SceneVariants.CreateCharacter(
-            cfg.enemyPrefabPath,
+            definition.prefabPath,
             cfg.enemySide,
             position,
-            cfg.BuildEnemyProperty(spawnedCount),
+            definition.ApplyTo(cfg.BuildEnemyProperty(spawnedCount)),
             degree,
-            cfg.enemyViewAnimInfo
+            definition.viewAnimInfo
         );
 
         if (enemy)
         {
-            enemy.AddComponent<SimpleAI>();
+            SimpleAI ai = enemy.AddComponent<SimpleAI>();
+            EnemyRuntime runtime = enemy.AddComponent<EnemyRuntime>();
+            runtime.Configure(definition);
         }
 
         return enemy;

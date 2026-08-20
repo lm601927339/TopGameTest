@@ -87,6 +87,19 @@ public class SimpleAI:MonoBehaviour{
     /// <summary>供战斗调试和后续行为树读取当前感知阶段。</summary>
     public EnemyAwarenessState AwarenessState { get { return awareness.State; } }
 
+    /// <summary>
+    /// 由 EnemyRuntime 在生成时写入职业攻击参数。现有预制体无需增加字段，
+    /// 也可继续在未配置职业时沿用 Inspector 默认值。
+    /// </summary>
+    public void ConfigureAttack(float newAttackRange, float newInitialAttackDelay, Vector2 newAttackCooldownRange)
+    {
+        attackRange = Mathf.Max(0.1f, newAttackRange);
+        initialAttackDelay = Mathf.Max(0f, newInitialAttackDelay);
+        attackCooldownRange = newAttackCooldownRange;
+        // 生成器可能在 Start 之前或之后调用；重置后都应按职业定义等待首次攻击。
+        attackTiming = new EnemyAttackTiming(initialAttackDelay);
+    }
+
     void Start() {
         chaState = this.gameObject.GetComponent<ChaState>();
         awarenessProfile = this.gameObject.GetComponent<EnemyAwarenessProfile>();

@@ -1,27 +1,25 @@
 using UnityEngine;
 
-/// <summary>波次敌人等级；当前阶段先复用现有敌人视图，数值和标记已区分。</summary>
-public enum WaveEnemyRank
-{
-    Normal,
-    Elite,
-    Boss
-}
-
 /// <summary>挂在波次生成单位上的运行时标记，供结算、Boss 血条和后续掉落系统读取。</summary>
 [DisallowMultipleComponent]
 public class WaveEnemyMarker : MonoBehaviour
 {
     public int wave;
     public WaveEnemyRank rank;
+    /// <summary>职业唯一 ID；掉落、图鉴和死亡事件只依赖此稳定值，不读取 GameObject 名称。</summary>
+    public string enemyId;
+    /// <summary>职业分类，供 Boss 进度和后续策划规则筛选。</summary>
+    public EnemyArchetype archetype;
 
     public bool IsBoss { get { return rank == WaveEnemyRank.Boss; } }
     public bool IsElite { get { return rank == WaveEnemyRank.Elite; } }
 
-    public void Configure(int waveNumber, WaveEnemyRank enemyRank)
+    public void Configure(int waveNumber, WaveEnemyRank enemyRank, EnemyDefinition definition)
     {
         wave = waveNumber;
         rank = enemyRank;
+        enemyId = definition != null ? definition.id : "legacy_enemy";
+        archetype = definition != null ? definition.archetype : EnemyArchetype.Ranged;
     }
 }
 
@@ -64,6 +62,7 @@ public class MobSpawnManager : MonoBehaviour
     private int mobSide = 2;
     private GameDesignConfig config;
     private WaveProgressionStateMachine progression;
+    private bool loggedLegacyDefinitionFallback;
 
     public WaveProgressionState WaveState
     {
@@ -203,28 +202,31 @@ public class MobSpawnManager : MonoBehaviour
     private bool SpawnWaveEnemy()
     {
         WaveEnemyRank rank = GetWaveRank(progression.CurrentWave);
-        ChaProperty property = BuildWaveProperty(rank);
+        EnemyDefinition definition = SelectEnemyDefinition(progression.CurrentWave, rank);
+        ChaProperty property = BuildWaveProperty(rank, definition);
         GameObject enemy = SceneVariants.CreateCharacter(
-            config.enemyPrefabPath,
+            definition.prefabPath,
             mobSide,
             SceneVariants.map.GetRandomPosForCharacter(new RectInt(0, 0, SceneVariants.map.MapWidth(), SceneVariants.map.MapHeight())),
             property,
             Random.Range(0.00f, 359.99f),
-            config.enemyViewAnimInfo
+            definition.viewAnimInfo
         );
         if (!enemy) return false;
 
         enemy.AddComponent<SimpleAI>();
+        ConfigureEnemyRuntime(enemy, definition);
         WaveEnemyMarker marker = enemy.AddComponent<WaveEnemyMarker>();
-        marker.Configure(progression.CurrentWave, rank);
+        marker.Configure(progression.CurrentWave, rank, definition);
         spawned += 1;
-        Debug.Log("[MobSpawnManager] Spawned " + rank + " enemy in wave " + progression.CurrentWave + ".");
+        Debug.Log("[MobSpawnManager] Spawned " + rank + " enemy=" + definition.id + " in wave " + progression.CurrentWave + ".");
         return true;
     }
 
-    private ChaProperty BuildWaveProperty(WaveEnemyRank rank)
+    private ChaProperty BuildWaveProperty(WaveEnemyRank rank, EnemyDefinition definition)
     {
         ChaProperty property = config.BuildEnemyProperty(spawned);
+        if (definition != null) property = definition.ApplyTo(property);
         float hpMultiplier = rank == WaveEnemyRank.Boss ? bossHpMultiplier : rank == WaveEnemyRank.Elite ? eliteHpMultiplier : 1f;
         float attackMultiplier = rank == WaveEnemyRank.Boss ? bossAttackMultiplier : rank == WaveEnemyRank.Elite ? eliteAttackMultiplier : 1f;
         property.hp = Mathf.Max(1, Mathf.RoundToInt(property.hp * hpMultiplier));
@@ -238,17 +240,44 @@ public class MobSpawnManager : MonoBehaviour
         int toSpawn = Mathf.Max(0, maxMob - aliveEnemyCount);
         for (int i = 0; i < toSpawn; i++)
         {
+            EnemyDefinition definition = SelectEnemyDefinition(1, WaveEnemyRank.Normal);
             GameObject enemy = SceneVariants.CreateCharacter(
-                config.enemyPrefabPath,
+                definition.prefabPath,
                 mobSide,
                 SceneVariants.map.GetRandomPosForCharacter(new RectInt(0, 0, SceneVariants.map.MapWidth(), SceneVariants.map.MapHeight())),
-                config.BuildEnemyProperty(spawned),
+                definition.ApplyTo(config.BuildEnemyProperty(spawned)),
                 Random.Range(0.00f, 359.99f),
-                config.enemyViewAnimInfo
+                definition.viewAnimInfo
             );
-            if (enemy) enemy.AddComponent<SimpleAI>();
+            if (enemy)
+            {
+                enemy.AddComponent<SimpleAI>();
+                ConfigureEnemyRuntime(enemy, definition);
+            }
             spawned += 1;
         }
+    }
+
+    /// <summary>按当前波次抽职业；错误或未完成的关卡配置会回退旧字段，不能阻塞生成流程。</summary>
+    private EnemyDefinition SelectEnemyDefinition(int wave, WaveEnemyRank rank)
+    {
+        EnemyDefinition definition;
+        if (EnemyCatalog.TrySelect(config, wave, rank, Random.Range(0, int.MaxValue), out definition)) return definition;
+
+        if (!loggedLegacyDefinitionFallback)
+        {
+            loggedLegacyDefinitionFallback = true;
+            Debug.LogWarning("[MobSpawnManager] No eligible enemy definition. Falling back to legacy enemy fields.");
+        }
+        return EnemyCatalog.CreateLegacyFallback(config);
+    }
+
+    /// <summary>统一为波次和旧补怪路径挂职业身份，并同步攻击节奏。</summary>
+    private static void ConfigureEnemyRuntime(GameObject enemy, EnemyDefinition definition)
+    {
+        if (!enemy) return;
+        EnemyRuntime runtime = enemy.AddComponent<EnemyRuntime>();
+        runtime.Configure(definition);
     }
 
     private void ResolveVictoryIfNeeded()

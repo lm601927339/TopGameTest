@@ -83,6 +83,11 @@ public class GameDesignConfig : ScriptableObject
     public int enemyActionSpeed = 100;
     public float enemyBodyRadius = 0.25f;
     public float enemyHitRadius = 0.40f;
+    /// <summary>
+    /// 敌人职业定义。为空时使用 EnemyCatalog 的首批内置职业；填入后本数组为该关卡的权威来源。
+    /// 保留上方旧字段，供非法职业配置或旧关卡安全回退。
+    /// </summary>
+    public EnemyDefinition[] enemyDefinitions = new EnemyDefinition[0];
     public int maxMob = 0;
     public float spawnPeriod = 10.0f;
 

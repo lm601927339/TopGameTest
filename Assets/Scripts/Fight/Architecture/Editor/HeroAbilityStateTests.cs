@@ -68,6 +68,81 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void EnemyCatalogFiltersBossCandidatesAndUsesWeight()
+    {
+        GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
+        try
+        {
+            EnemyDefinition ordinary = new EnemyDefinition(
+                "ordinary", "普通怪", EnemyArchetype.Ranged, "Ghost", "Default_Gunner",
+                100, 1, 0, true, false, 1f, 1f, 1f, 1f, 8f, 0.75f, new Vector2(2f, 5f));
+            EnemyDefinition boss = new EnemyDefinition(
+                "boss", "Boss怪", EnemyArchetype.Armored, "Ghost", "Default_Gunner",
+                1, 2, 0, true, true, 2f, 2f, 0.5f, 0.8f, 7f, 1f, new Vector2(3f, 4f));
+            config.enemyDefinitions = new[] { ordinary, boss };
+
+            EnemyDefinition selected;
+            Assert.That(EnemyCatalog.TrySelect(config, 2, WaveEnemyRank.Boss, 0, out selected), Is.True);
+            Assert.That(selected.id, Is.EqualTo("boss"));
+            Assert.That(EnemyCatalog.TrySelect(config, 1, WaveEnemyRank.Boss, 0, out selected), Is.False);
+        }
+        finally
+        {
+            Object.DestroyImmediate(config);
+        }
+    }
+
+    [Test]
+    public void EnemyCatalogIgnoresZeroWeightAndAppliesPropertyMultipliers()
+    {
+        GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
+        try
+        {
+            EnemyDefinition disabled = new EnemyDefinition(
+                "disabled", "禁用怪", EnemyArchetype.Custom, "Ghost", "Default_Gunner",
+                0, 1, 0, true, true, 9f, 9f, 9f, 9f, 8f, 1f, new Vector2(1f, 1f));
+            config.enemyDefinitions = new[] { disabled };
+
+            EnemyDefinition selected;
+            Assert.That(EnemyCatalog.TrySelect(config, 1, WaveEnemyRank.Normal, 0, out selected), Is.False);
+
+            EnemyDefinition swift = new EnemyDefinition(
+                "swift", "疾行怪", EnemyArchetype.Swift, "Ghost", "Default_Gunner",
+                1, 1, 0, true, false, 0.5f, 1.5f, 2f, 0.75f, 6f, 0.4f, new Vector2(1f, 2f));
+            ChaProperty result = swift.ApplyTo(new ChaProperty(100, 80, 0, 20, 100, 0.25f, 0.25f));
+            Assert.That(result.hp, Is.EqualTo(40));
+            Assert.That(result.attack, Is.EqualTo(30));
+            Assert.That(result.moveSpeed, Is.EqualTo(200));
+            Assert.That(result.actionSpeed, Is.EqualTo(75));
+        }
+        finally
+        {
+            Object.DestroyImmediate(config);
+        }
+    }
+
+    [Test]
+    public void EnemyCatalogFallsBackToLegacyDefinitionWhenNoEligibleConfig()
+    {
+        GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
+        config.enemyPrefabPath = "LegacyGhost";
+        config.enemyViewAnimInfo = "LegacyAnim";
+        config.enemyDefinitions = new[]
+        {
+            new EnemyDefinition(
+                "future", "未来怪", EnemyArchetype.Custom, "Ghost", "Default_Gunner",
+                1, 5, 6, true, true, 1f, 1f, 1f, 1f, 8f, 1f, new Vector2(1f, 1f))
+        };
+
+        EnemyDefinition selected;
+        Assert.That(EnemyCatalog.TrySelect(config, 1, WaveEnemyRank.Normal, 0, out selected), Is.False);
+        EnemyDefinition fallback = EnemyCatalog.CreateLegacyFallback(config);
+        Assert.That(fallback.id, Is.EqualTo("legacy_enemy"));
+        Assert.That(fallback.prefabPath, Is.EqualTo("LegacyGhost"));
+        Assert.That(fallback.viewAnimInfo, Is.EqualTo("LegacyAnim"));
+    }
+
+    [Test]
     public void AvailableHeroesUseConfiguredOverrideAndIncludeNewHero()
     {
         GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
