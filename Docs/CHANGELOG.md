@@ -1,5 +1,26 @@
 # 修改日志
 
+## 2026-08-20 - P1-06 局内随机强化与升级暂停
+
+### 新增
+
+- 新增 `BattleUpgradeDefinition`、`BattleUpgradeCatalog` 和 `BattleUpgradeService`：主角升级时按权重抽取不重复候选，选择后应用属性强化、已有技能升级或英雄专属新技能。
+- 新增 `BattlePauseState` 与 `BattlePauseService`：强化面板展示期间保存原始 `Time.timeScale` 并暂停战斗；选择、失败或胜利后恢复，且暂停来源不能互相误恢复。
+- `GameDesignConfig` 增加强化开关、候选数量和可覆盖/追加的强化定义数组；内置首批攻击、移速、生命、技能等级强化及受英雄契约约束的新技能候选。
+- 新增运行时 `BattleUpgradePanel` 占位界面：升级时显示三项候选；正式 UI 预制体和美术资源后续替换，不影响强化服务事件接口。
+- `ChaState` 增加永久属性强化入口，最大生命强化会同步补充当前生命并经过统一属性重算。
+
+### 验证
+
+- Unity 2021.3.57f2 EditMode：`HeroAbilityStateTests` 28/28 通过。
+- `dotnet build Assembly-CSharp-Editor.csproj -nologo --no-restore`：0 错误；保留 5 个既有警告。
+
+### 待手工验收
+
+- 使用三名英雄分别击杀到升级：确认战斗暂停、强化面板显示三项且只能选择一次；选择后玩家/敌人/子弹恢复推进。
+- 暗影潜行者、毒雾炼金师、风暴术士只能看到各自技能契约内的新技能；不能给任意英雄随机加入其他职业技能。
+- 在强化面板打开时触发玩家死亡或 Boss 胜利：确认面板关闭、时间缩放恢复，结算界面正常出现。
+
 ## 2026-08-20 - P1-05 战斗经验与货币奖励
 
 ### 新增

@@ -691,6 +691,19 @@ public class ChaState:MonoBehaviour{
         return true;
     }
 
+    /// <summary>
+    /// 应用局内永久属性强化。最大生命增加时同步补充当前生命，避免升级后血条比例突兀下降；
+    /// 最终属性仍经统一 AttrRecheck 计算，移动、攻击和行动速度立即对现有战斗系统生效。
+    /// </summary>
+    public void ApplyPermanentPropertyBonus(ChaProperty bonus)
+    {
+        int oldMaxHp = this._prop.hp;
+        this.baseProp += bonus;
+        this.AttrRecheck();
+        if (bonus.hp > 0) this.resource.hp += this._prop.hp - oldMaxHp;
+        this.resource = CharacterStatsUtility.ClampResource(this.resource, this._prop);
+    }
+
     public bool RemoveSkill(string skillId)
     {
         if (string.IsNullOrEmpty(skillId))

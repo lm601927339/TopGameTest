@@ -116,6 +116,14 @@ public class GameDesignConfig : ScriptableObject
     public int eliteEnemyCurrency = 4;
     public int bossEnemyCurrency = 15;
 
+    [Header("Battle Upgrades")]
+    /// <summary>升级时是否进入随机强化选择；关闭后仍保留经验和等级记录。</summary>
+    public bool enableBattleUpgrades = true;
+    /// <summary>每次升级展示的候选数量，实际数量会受合法候选池大小限制。</summary>
+    public int upgradeChoiceCount = 3;
+    /// <summary>为空时使用内置强化；填入后可覆盖同 ID 或追加关卡专属强化。</summary>
+    public BattleUpgradeDefinition[] battleUpgradeDefinitions = new BattleUpgradeDefinition[0];
+
     [Header("Prefabs")]
     public string characterRootPrefab = "CharacterObj";
     public string bulletPrefabPath = "BulletObj";

@@ -305,6 +305,128 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void BattleUpgradeCatalogFiltersDisabledAndDisallowedSkillCandidates()
+    {
+        GameObject player = new GameObject("UpgradeCatalogPlayer");
+        GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
+        try
+        {
+            ChaState state = player.AddComponent<ChaState>();
+            SkillModel fire;
+            Assert.That(GameDatabase.TryGetSkill("fire", out fire), Is.True);
+            state.LearnSkill(fire);
+
+            // 覆盖内置项为零权重，仅留下一个属性项、一个技能升级项和一个不属于英雄的技能项。
+            config.battleUpgradeDefinitions = new[]
+            {
+                new BattleUpgradeDefinition("attack_plus_10", "禁用攻击", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 0, false),
+                new BattleUpgradeDefinition("move_speed_plus_10", "禁用移速", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 0, false),
+                new BattleUpgradeDefinition("max_hp_plus_100", "禁用生命", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 0, false),
+                new BattleUpgradeDefinition("skill_level_up", "禁用技能", "", BattleUpgradeKind.SkillLevel, ChaProperty.zero, "", 0, true),
+                new BattleUpgradeDefinition("new_skill_fireMultiple", "禁用散射", "", BattleUpgradeKind.NewSkill, ChaProperty.zero, "fireMultiple", 0, false),
+                new BattleUpgradeDefinition("health_test", "生命测试", "最大生命 +20", BattleUpgradeKind.Property, new ChaProperty(0, 20), "", 2, false),
+                new BattleUpgradeDefinition("fire_test", "射击精进", "提升射击", BattleUpgradeKind.SkillLevel, ChaProperty.zero, "fire", 1, true),
+                new BattleUpgradeDefinition("forbidden_skill", "越权技能", "不应出现", BattleUpgradeKind.NewSkill, ChaProperty.zero, "fireMultiple", 9, false)
+            };
+            HeroDefinition hero = CreateHero("upgrade_hero", "强化测试英雄", HeroArchetype.Custom);
+            hero.skillIds = new[] { "fire" };
+
+            BattleUpgradeSelection selection = BattleUpgradeCatalog.CreateSelection(config, state, hero, 3, 7);
+
+            Assert.That(selection.Candidates.Count, Is.EqualTo(2));
+            Assert.That(selection.Candidates[0].id, Is.Not.EqualTo(selection.Candidates[1].id));
+            Assert.That(selection.Candidates[0].id, Is.Not.EqualTo("forbidden_skill"));
+            Assert.That(selection.Candidates[1].id, Is.Not.EqualTo("forbidden_skill"));
+        }
+        finally
+        {
+            Object.DestroyImmediate(config);
+            Object.DestroyImmediate(player);
+        }
+    }
+
+    [Test]
+    public void BattleUpgradeSelectionLocksAfterFirstChoice()
+    {
+        BattleUpgradeDefinition definition = new BattleUpgradeDefinition(
+            "choice", "选择", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 1, false);
+        BattleUpgradeSelection selection = new BattleUpgradeSelection(new List<BattleUpgradeCandidate>
+        {
+            new BattleUpgradeCandidate(definition, "choice", "选择", "", "")
+        });
+        BattleUpgradeCandidate selected;
+
+        Assert.That(selection.TrySelect(0, out selected), Is.True);
+        Assert.That(selected.id, Is.EqualTo("choice"));
+        Assert.That(selection.TrySelect(0, out selected), Is.False);
+        Assert.That(selection.SelectedIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void BattlePauseStateRequiresMatchingResumeSource()
+    {
+        BattlePauseState pause = new BattlePauseState();
+        Assert.That(pause.TryPause("upgrade"), Is.True);
+        Assert.That(pause.TryPause("shop"), Is.False);
+        Assert.That(pause.TryResume("shop"), Is.False);
+        Assert.That(pause.IsPaused, Is.True);
+        Assert.That(pause.TryResume("upgrade"), Is.True);
+        Assert.That(pause.IsPaused, Is.False);
+    }
+
+    [Test]
+    public void BattleUpgradeServicePausesThenAppliesPropertyAndResumes()
+    {
+        float originalTimeScale = Time.timeScale;
+        GameObject player = new GameObject("UpgradeServicePlayer");
+        GameObject services = new GameObject("UpgradeServices");
+        GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
+        try
+        {
+            Time.timeScale = 1f;
+            ChaState state = player.AddComponent<ChaState>();
+            state.InitBaseProp(new ChaProperty(100, 100, 0, 10));
+            config.enableBattleUpgrades = true;
+            config.upgradeChoiceCount = 1;
+            config.battleUpgradeDefinitions = new[]
+            {
+                new BattleUpgradeDefinition("attack_plus_10", "禁用攻击", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 0, false),
+                new BattleUpgradeDefinition("move_speed_plus_10", "禁用移速", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 0, false),
+                new BattleUpgradeDefinition("max_hp_plus_100", "禁用生命", "", BattleUpgradeKind.Property, ChaProperty.zero, "", 0, false),
+                new BattleUpgradeDefinition("skill_level_up", "禁用技能", "", BattleUpgradeKind.SkillLevel, ChaProperty.zero, "", 0, true),
+                new BattleUpgradeDefinition("new_skill_fireMultiple", "禁用散射", "", BattleUpgradeKind.NewSkill, ChaProperty.zero, "fireMultiple", 0, false),
+                new BattleUpgradeDefinition("upgrade_hp", "生命强化", "最大生命 +25", BattleUpgradeKind.Property, new ChaProperty(0, 25), "", 1, false)
+            };
+
+            BattleRewardService rewards = services.AddComponent<BattleRewardService>();
+            rewards.ConfigureForBattle(config, player);
+            BattlePauseService pause = services.AddComponent<BattlePauseService>();
+            BattleUpgradeService upgrades = services.AddComponent<BattleUpgradeService>();
+            upgrades.ConfigureForBattle(config, player, CreateHero("upgrade_service_hero", "强化测试", HeroArchetype.Custom));
+
+            MethodInfo onRewardGranted = typeof(BattleUpgradeService).GetMethod("OnRewardGranted", BindingFlags.Instance | BindingFlags.NonPublic);
+            onRewardGranted.Invoke(upgrades, new object[] { new BattleRewardGrant(100, 0, 1, 2, 1) });
+
+            Assert.That(upgrades.IsAwaitingChoice, Is.True);
+            Assert.That(pause.State.IsPaused, Is.True);
+            Assert.That(Time.timeScale, Is.EqualTo(0f));
+            Assert.That(upgrades.TryChooseUpgrade(0), Is.True);
+            Assert.That(state.property.hp, Is.EqualTo(125));
+            Assert.That(state.resource.hp, Is.EqualTo(125));
+            Assert.That(pause.State.IsPaused, Is.False);
+            Assert.That(Time.timeScale, Is.EqualTo(1f));
+            Assert.That(upgrades.TryChooseUpgrade(0), Is.False);
+        }
+        finally
+        {
+            Time.timeScale = originalTimeScale;
+            Object.DestroyImmediate(config);
+            Object.DestroyImmediate(services);
+            Object.DestroyImmediate(player);
+        }
+    }
+
+    [Test]
     public void AvailableHeroesUseConfiguredOverrideAndIncludeNewHero()
     {
         GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();

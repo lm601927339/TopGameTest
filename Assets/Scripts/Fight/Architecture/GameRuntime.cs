@@ -7,6 +7,7 @@ public static class GameRuntime
     private static TimelineManager timelineManager;
     private static DamageManager damageManager;
     private static BattleRewardService battleRewardService;
+    private static BattlePauseService battlePauseService;
     private static EffectManager effectManager;
     private static PopTextManager popTextManager;
     private static Camera mainCamera;
@@ -39,7 +40,8 @@ public static class GameRuntime
         prefabCache.Clear();
         rootObject = null;
         mainActor = null;
-        battleRewardService = null;
+            battleRewardService = null;
+            battlePauseService = null;
     }
 
     public static void SetMainActor(GameObject actor)
@@ -98,6 +100,19 @@ public static class GameRuntime
                 battleRewardService = Object.FindObjectOfType<BattleRewardService>();
             }
             return battleRewardService;
+        }
+    }
+
+    /// <summary>当前战局暂停服务，升级选择、后续商店或剧情弹窗共用同一暂停来源。</summary>
+    public static BattlePauseService BattlePause
+    {
+        get
+        {
+            if (!battlePauseService)
+            {
+                battlePauseService = Object.FindObjectOfType<BattlePauseService>();
+            }
+            return battlePauseService;
         }
     }
 

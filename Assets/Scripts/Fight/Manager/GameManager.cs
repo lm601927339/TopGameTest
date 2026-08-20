@@ -113,6 +113,18 @@ public class GameManager : MonoBehaviour
         if (rewardService == null) rewardService = gameObject.AddComponent<BattleRewardService>();
         rewardService.ConfigureForBattle(Config, mainCharacter);
 
+        // 随机强化共享统一暂停服务；当前阶段由代码创建选择面板，不制作正式预制体。
+        BattlePauseService pauseService = GetComponent<BattlePauseService>();
+        if (pauseService == null) pauseService = gameObject.AddComponent<BattlePauseService>();
+        BattleUpgradeService upgradeService = GetComponent<BattleUpgradeService>();
+        if (upgradeService == null) upgradeService = gameObject.AddComponent<BattleUpgradeService>();
+        upgradeService.ConfigureForBattle(
+            Config,
+            mainCharacter,
+            useHeroDefinition ? selectedHero : null
+        );
+        if (Config.enableBattleUpgrades) BattleUpgradePanel.Ensure(Config, upgradeService);
+
         // 旧场景可能没有手动放置刷怪器；自动补齐后仍使用同一套设计配置。
         MobSpawnManager mobSpawner = FindObjectOfType<MobSpawnManager>();
         if (mobSpawner == null) mobSpawner = gameObject.AddComponent<MobSpawnManager>();
@@ -173,6 +185,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StopBattleActors(bool clearLivingEnemies)
     {
+        BattleUpgradeService upgradeService = GetComponent<BattleUpgradeService>();
+        if (upgradeService != null) upgradeService.CloseSelection();
+        BattlePauseService pauseService = GetComponent<BattlePauseService>();
+        if (pauseService != null) pauseService.ForceResume();
         PlayerController playerController = mainCharacter ? mainCharacter.GetComponent<PlayerController>() : null;
         if (playerController != null) playerController.enabled = false;
 
