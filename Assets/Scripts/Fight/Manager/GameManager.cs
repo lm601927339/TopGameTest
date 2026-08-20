@@ -108,6 +108,11 @@ public class GameManager : MonoBehaviour
         // 结算面板同样由代码创建，当前阶段不要求制作正式预制体。
         resultPanel = BattleResultPanel.Ensure(Config);
 
+        // 奖励服务订阅统一死亡事件；当前只记录局内经验和货币，不要求制作拾取物预制体。
+        BattleRewardService rewardService = GetComponent<BattleRewardService>();
+        if (rewardService == null) rewardService = gameObject.AddComponent<BattleRewardService>();
+        rewardService.ConfigureForBattle(Config, mainCharacter);
+
         // 旧场景可能没有手动放置刷怪器；自动补齐后仍使用同一套设计配置。
         MobSpawnManager mobSpawner = FindObjectOfType<MobSpawnManager>();
         if (mobSpawner == null) mobSpawner = gameObject.AddComponent<MobSpawnManager>();

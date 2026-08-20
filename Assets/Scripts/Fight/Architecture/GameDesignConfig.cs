@@ -105,6 +105,17 @@ public class GameDesignConfig : ScriptableObject
     public float bossHpMultiplier = 4.0f;
     public float bossAttackMultiplier = 2.0f;
 
+    [Header("Battle Rewards")]
+    /// <summary>开启后，主角击杀敌人会获得局内经验和货币；未归属或敌人互殴不发奖励。</summary>
+    public bool enableBattleRewards = true;
+    public int rewardExperiencePerLevel = 100;
+    public int normalEnemyExperience = 10;
+    public int eliteEnemyExperience = 30;
+    public int bossEnemyExperience = 100;
+    public int normalEnemyCurrency = 1;
+    public int eliteEnemyCurrency = 4;
+    public int bossEnemyCurrency = 15;
+
     [Header("Prefabs")]
     public string characterRootPrefab = "CharacterObj";
     public string bulletPrefabPath = "BulletObj";

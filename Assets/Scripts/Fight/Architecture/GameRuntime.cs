@@ -6,6 +6,7 @@ public static class GameRuntime
     private static GameManager gameManager;
     private static TimelineManager timelineManager;
     private static DamageManager damageManager;
+    private static BattleRewardService battleRewardService;
     private static EffectManager effectManager;
     private static PopTextManager popTextManager;
     private static Camera mainCamera;
@@ -38,6 +39,7 @@ public static class GameRuntime
         prefabCache.Clear();
         rootObject = null;
         mainActor = null;
+        battleRewardService = null;
     }
 
     public static void SetMainActor(GameObject actor)
@@ -83,6 +85,19 @@ public static class GameRuntime
                 damageManager = Object.FindObjectOfType<DamageManager>();
             }
             return damageManager;
+        }
+    }
+
+    /// <summary>当前战局奖励服务，供经验条、货币 HUD 和随机强化入口读取。</summary>
+    public static BattleRewardService BattleRewards
+    {
+        get
+        {
+            if (!battleRewardService)
+            {
+                battleRewardService = Object.FindObjectOfType<BattleRewardService>();
+            }
+            return battleRewardService;
         }
     }
 

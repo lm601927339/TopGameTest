@@ -1,5 +1,24 @@
 # 修改日志
 
+## 2026-08-20 - P1-05 战斗经验与货币奖励
+
+### 新增
+
+- 新增 `BattleRewardState`，支持局内经验、等级、货币和击杀数，升级时保留溢出经验。
+- 新增 `BattleRewardService`，订阅 `CharacterDeathService.CharacterDied`，只为主角归属的敌人击杀发放奖励。
+- 普通、精英和 Boss 的经验/货币奖励加入 `GameDesignConfig`，默认值分别为 `10/1`、`30/4`、`100/15`。
+- 暴露 `GameRuntime.BattleRewards` 和 `RewardGranted` 事件，为经验条、货币 HUD、随机强化和后续实体掉落保留接入点；本阶段不新增拾取物预制体。
+
+### 验证
+
+- 新增 EditMode 回归用例，覆盖经验溢出升级、货币累计、敌人互殴不奖励和主角击杀 Boss 奖励。
+- 待运行 Unity 2021.3.57f2 EditMode 与 `Assembly-CSharp-Editor` 编译检查。
+
+### 待手工验收
+
+- 战斗中由主角击杀普通/精英/Boss，确认经验和货币按配置增加；敌人互殴、环境伤害和无攻击者死亡不增加奖励。
+- 后续将 `RewardGranted` 接入经验条、货币 HUD 和随机强化选择界面；实体掉落仍需预制体和拾取规则。
+
 ## 2026-08-20 - 项目 README 与当前功能说明
 
 ### 新增

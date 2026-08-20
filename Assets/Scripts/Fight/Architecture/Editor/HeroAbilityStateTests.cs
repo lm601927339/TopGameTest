@@ -229,6 +229,82 @@ public class HeroAbilityStateTests
     }
 
     [Test]
+    public void BattleRewardStatePreservesOverflowAndLevelsUp()
+    {
+        BattleRewardState rewards = new BattleRewardState(1, 90, 2, 100);
+        BattleRewardGrant grant = rewards.Apply(20, 3);
+
+        Assert.That(grant.experience, Is.EqualTo(20));
+        Assert.That(grant.currency, Is.EqualTo(3));
+        Assert.That(grant.levelBefore, Is.EqualTo(1));
+        Assert.That(grant.levelAfter, Is.EqualTo(2));
+        Assert.That(grant.leveledUp, Is.True);
+        Assert.That(rewards.Experience, Is.EqualTo(10));
+        Assert.That(rewards.Currency, Is.EqualTo(5));
+        Assert.That(rewards.TotalKills, Is.EqualTo(1));
+        Assert.That(rewards.ExperienceToNextLevel, Is.EqualTo(200));
+    }
+
+    [Test]
+    public void BattleRewardServiceOnlyRewardsPlayerOwnedEnemyDeaths()
+    {
+        CharacterDeathService.ResetForTests();
+        GameObject player = new GameObject("RewardPlayer");
+        GameObject enemy = new GameObject("RewardBoss");
+        GameObject otherAttacker = new GameObject("OtherAttacker");
+        GameObject serviceObject = new GameObject("BattleRewardService");
+        try
+        {
+            GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
+            config.enableBattleRewards = true;
+            config.rewardExperiencePerLevel = 100;
+            config.bossEnemyExperience = 100;
+            config.bossEnemyCurrency = 15;
+
+            GameRuntime.SetMainActor(player);
+            BattleRewardService service = serviceObject.AddComponent<BattleRewardService>();
+            service.ConfigureForBattle(config, player);
+            WaveEnemyMarker marker = enemy.AddComponent<WaveEnemyMarker>();
+            marker.Configure(3, WaveEnemyRank.Boss, null);
+            ChaState enemyState = enemy.AddComponent<ChaState>();
+            enemyState.side = 2;
+
+            enemyState.Kill(otherAttacker);
+            Assert.That(service.State.TotalKills, Is.EqualTo(0));
+            enemyState.Kill(player);
+            Assert.That(service.State.TotalKills, Is.EqualTo(0));
+
+            GameObject secondEnemy = new GameObject("RewardBossSecond");
+            try
+            {
+                secondEnemy.AddComponent<WaveEnemyMarker>().Configure(3, WaveEnemyRank.Boss, null);
+                ChaState secondState = secondEnemy.AddComponent<ChaState>();
+                secondState.side = 2;
+                secondState.Kill(player);
+                Assert.That(service.State.TotalKills, Is.EqualTo(1));
+                Assert.That(service.State.Experience, Is.EqualTo(0));
+                Assert.That(service.State.Currency, Is.EqualTo(15));
+                Assert.That(service.State.Level, Is.EqualTo(2));
+            }
+            finally
+            {
+                Object.DestroyImmediate(secondEnemy);
+            }
+
+            Object.DestroyImmediate(config);
+        }
+        finally
+        {
+            CharacterDeathService.ResetForTests();
+            GameRuntime.SetMainActor(null);
+            Object.DestroyImmediate(serviceObject);
+            Object.DestroyImmediate(otherAttacker);
+            Object.DestroyImmediate(enemy);
+            Object.DestroyImmediate(player);
+        }
+    }
+
+    [Test]
     public void AvailableHeroesUseConfiguredOverrideAndIncludeNewHero()
     {
         GameDesignConfig config = ScriptableObject.CreateInstance<GameDesignConfig>();
